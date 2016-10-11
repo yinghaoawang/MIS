@@ -1,6 +1,9 @@
-int main() {
-  int a = 9999999; // hard to read
-  int b = 9'999'999; // easy to read that it's 9 million (10 mil)
+#include <iostream>
+#include <bitset>
 
-  return 0;
-}
+int main() {
+  int a = 0b01010101;
+  int b = 0b10101011;
+  // bitset outputs the binary representation of the value
+  std::cout << std::bitset<8>(a | b) << '\n'; // output 11111111
+  std::cout << std::bitset<8>(a & b) << '\n'; // output 00000001
