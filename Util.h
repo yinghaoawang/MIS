@@ -9,17 +9,18 @@
  * i.e ADD $var, 1, 2
  * sets src_str to "ADD"
  */
-void get_opname_line(std::istream&is, std::string& src_str, std::string& src_line) {
+std::istream &get_opname_line(std::istream &is, std::string &src_str, std::string &src_line) {
   // TODO - not optimized
-  if (src_str.empty()) return;
   std::string str;
   std::getline(is, str);
+  if (str.empty()) return is;
   if (src_line.empty()) src_line = str;
   char *cstr = (char*)malloc(sizeof(char) * str.length() + 1);
   strcpy(cstr, str.c_str());
   char *token = std::strtok(cstr, " \n");
   src_str = std::string(token);
   free(cstr);
+  return is;
 }
 
 

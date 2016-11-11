@@ -32,18 +32,37 @@ class VM {
       parser_factory = factory_producer.GetFactory("PARSER");
     }
 
+    void PrintOperations() {
+      std::cout << "printop" << std::endl;
+      for (auto it = operations.begin(); it != operations.end(); ++it) {
+        (*it)->execute();
+      }
+    }
+
     void ReadFile(char* filename) {
-      std::ifstream input_file;
-      input_file.open(filename);
+      std::ifstream ifs(filename);
+      if (!ifs.is_open()) {
+        std::cerr << "coudl not open shit" << std::endl;
+        return;
+      }
 
       std::string op_name;
       std::string line;
-      while (input_file.good()) {
-        get_opname_line(input_file, op_name, line);
+      while (ifs.good()) {
+        get_opname_line(ifs, op_name, line);
         auto parser = parser_factory->GetParser(op_name);
+        if (parser == nullptr) {
+          std::cerr << "unrecognized operation " << op_name << " from parser" << std::endl;
+          delete parser;
+          continue;
+        }
         Operation *op = parser->ParseOp(line);
         operations.push_back(op);
+        delete parser;
       }
+
+      PrintOperations();
+      ifs.close();
     }
 };
 
