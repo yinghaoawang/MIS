@@ -1,38 +1,41 @@
 #ifndef FACTORY_H_
 #define FACTORY_H_
+
 #include <map>
+#include <string>
 #include "Parser.h"
 #include "Operation.h"
 
 class AbstractFactory {
-  virtual Parser* GetParser(std::string str) { return nullptr; }
-  virtual Operation* GetOperation(std::string str) { return nullptr; }
+  public:
+    virtual void Init()=0;
+    virtual Parser* GetParser(std::string);
+    virtual Operation* GetOperation(std::string);
 };
 
 class ParserFactory : public AbstractFactory {
-  static std::map<std::string, Parser*> parsers;
-  void Init() {
-    parsers["ADD"] = new AddParser();
-    parsers["SUB"] = new SubParser();
-  }
-  Parser* GetParser(std::string str) {
-    return parsers[str]->clone();
-  }
+  private:
+    static std::map<std::string, Parser*> parsers;
+    static bool initialized;
+  public:
+    ParserFactory();
+    void Init();
+    Parser* GetParser(std::string);
 };
 
-class OperationFactory : AbstractFactory {
-  static std::map<std::string, Operation*> operations;
-  void Init() {
-    operations["ADD"] = new AddOperation();
-    operations["SUB"] = new SubOperation();
-  }
-  Operation* GetOperation(std::string str) {
-    return operations[str]->clone();
-  }
+class OperationFactory : public AbstractFactory {
+  private:
+    static std::map<std::string, Operation*> operations;
+    static bool initialized;
+  public:
+    OperationFactory();
+    void Init();
+    Operation* GetOperation(std::string);
 };
 
 class FactoryProducer {
-  public static AbstractFactory GetFactory(String choice) {
-  }
+  public:
+    AbstractFactory *GetFactory(std::string);
 };
+
 #endif

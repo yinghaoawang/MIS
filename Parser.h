@@ -1,22 +1,14 @@
 #ifndef PARSER_H_
 #define PARSER_H_
-#include "strutil.h"
+
+#include "Operation.h"
 
 class Parser {
   public:
     Parser() {}
-    /*
-    void parse_line(std::string &str) {
-      std::vector<std::string> strings = split_line(str);
-      std::cout << strings.size() << std::endl;
-
-      for (auto it = strings.begin(); it != strings.end(); ++it) {
-        std::cout << *it << std::endl;
-      }
-    }
-    */
     virtual void initialize()=0;
-    virtual Parser* clone()=0;
+    virtual Parser *clone()=0;
+    virtual Operation *ParseOp(std::string)=0;
 };
 
 
@@ -29,6 +21,8 @@ class AddParser : public Parser {
       p->initialize();
       return p;
     }
+    virtual Operation *ParseOp(std::string) {
+    }
 };
 
 class SubParser : public Parser {
@@ -39,6 +33,9 @@ class SubParser : public Parser {
       Parser *p = new SubParser();
       p->initialize();
       return p;
+    }
+    virtual Operation *ParseOp(std::string) {
+
     }
 
 };
