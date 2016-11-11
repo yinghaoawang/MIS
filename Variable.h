@@ -1,39 +1,16 @@
 #ifndef VARIABLE_H_
 #define VARIABLE_H_
 
+#include "Data.h"
+
 class Variable {
-  public:
-    std::string name;
-};
-
-class CharSequence : Variable {
-  public:
-    virtual char asChar()=0;
-    virtual char* asString()=0;
-};
-
-class String : CharSequence {
   private:
-    char s[256];
+    Data *data;
+
   public:
-    char asChar() {
-      return s[0];
-    }
-    char* asString() {
-      return s;
-    }
+    Data *GetData() { return data; }
 };
 
-class Char : CharSequence {
-  private:
-    char c;
-  public:
-    char asChar() {
-      return c;
-    }
-    char* asString() {
-      return &c;
-    }
-};
+
 
 #endif

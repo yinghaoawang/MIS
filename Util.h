@@ -4,12 +4,13 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include <sstream>
 
 /* get's the operation name of the next line in input stream
  * i.e ADD $var, 1, 2
  * sets src_str to "ADD"
  */
-std::istream &get_opname_line(std::istream &is, std::string &src_str, std::string &src_line) {
+inline std::istream &get_opname_line(std::istream &is, std::string &src_str, std::string &src_line) {
   // TODO - not optimized
   std::string str;
   std::getline(is, str);
@@ -21,6 +22,12 @@ std::istream &get_opname_line(std::istream &is, std::string &src_str, std::strin
   src_str = std::string(token);
   free(cstr);
   return is;
+}
+
+inline std::istream &get_opname_line(std::string &is_str, std::string &src_str, std::string &src_line) {
+  // TODO - not optimized
+  std::istringstream iss(is_str);
+  return get_opname_line(iss, src_str, src_line);
 }
 
 

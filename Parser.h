@@ -3,45 +3,69 @@
 
 #include <iostream>
 #include "Operation.h"
+#include "FactoryProducer.h"
+#include "Token.h"
+#include "Util.h"
 
 class Parser {
   public:
     Parser() {}
-    virtual void Init()=0;
-    virtual Parser *clone()=0;
-    virtual Operation *ParseOp(std::string)=0;
+    virtual Parser *Clone()=0;
+
+    virtual std::vector<Token> Tokenize(std::string&)=0;
+
+    Operation *ParseOp(std::string &str) {
+      FactoryProducer fp = FactoryProducer();
+      auto ap = fp.GetFactory("OPERATION");
+
+      std::vector<Token> tokens = Tokenize(str);
+
+      std::string opname;
+      std::string line;
+      get_opname_line(str, opname, line);
+
+      auto operation = (ap->GetOperation(opname))->Clone();
+
+      if (tokens.size() < operation->GetMinParams() + 1 ||
+          tokens.size() > operation->GetMaxParams() + 1) {
+        std::cerr << "Wrong amount of parameters for operation: ";
+        std::cerr << "Got " << tokens.size() - 1 << " need ";
+        std::cerr << operation->GetMinParams() << "-";
+        std::cerr << operation->GetMaxParams() << std::endl;
+        delete ap;
+        return nullptr;
+      }
+      operation->SetParams(tokens);
+      delete ap;
+      return operation;
+    }
 };
 
 
 class AddParser : public Parser {
   public:
     AddParser() {}
-    virtual void Init() {
-      std::cout << "made an add parser" << std::endl;
-    }
-    virtual Parser *clone() {
+    virtual Parser *Clone() {
       Parser *p = new AddParser();
-      p->Init();
       return p;
     }
-    virtual Operation *ParseOp(std::string) {
-      return new AddOperation();
+    virtual std::vector<Token> Tokenize(std::string &str) {
+      std::vector<Token> tokens;
+      return tokens;
     }
 };
 
 class SubParser : public Parser {
   public:
     SubParser() {}
-    virtual void Init() {}
-    virtual Parser *clone() {
+    virtual Parser *Clone() {
       Parser *p = new SubParser();
-      p->Init();
       return p;
     }
-    virtual Operation *ParseOp(std::string) {
-      return new AddOperation();
+    virtual std::vector<Token> Tokenize(std::string &str) {
+      std::vector<Token> tokens;
+      return tokens;
     }
-
 };
 
 #endif

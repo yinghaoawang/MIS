@@ -9,7 +9,8 @@
 #include "Label.h"
 #include "Operation.h"
 #include "Parser.h"
-#include "Factory.h"
+#include "AbstractFactory.h"
+#include "FactoryProducer.h"
 #include "Util.h"
 
 class VM {
@@ -26,6 +27,13 @@ class VM {
     VM() {
       Init();
     }
+    ~VM() {
+      for (auto it = operations.begin(); it != operations.end(); ++it) { delete *it; }
+      for (auto it = variables.begin(); it != variables.end(); ++it) { delete it->second; }
+      for (auto it = labels.begin(); it != labels.end(); ++it) { delete it->second; }
+      delete parser_factory;
+      delete operation_factory;
+    }
     void Init() {
       factory_producer = FactoryProducer();
       operation_factory = factory_producer.GetFactory("OPERATION");
@@ -35,9 +43,8 @@ class VM {
     void PrintOperations() {
       std::cout << "printop" << std::endl;
       for (auto it = operations.begin(); it != operations.end(); ++it) {
-        (*it)->execute();
-      }
-    }
+        (*it)->Execute();
+      } }
 
     void ReadFile(char* filename) {
       std::ifstream ifs(filename);
@@ -57,7 +64,7 @@ class VM {
           continue;
         }
         Operation *op = parser->ParseOp(line);
-        operations.push_back(op);
+        if (op != nullptr) operations.push_back(op);
         delete parser;
       }
 
