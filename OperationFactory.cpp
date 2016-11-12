@@ -25,7 +25,6 @@ Operation* OperationFactory::GetOperation(std::string str) {
 OperationFactory::~OperationFactory() {
   if (initialized) {
     initialized = false;
-    std::cout << "???"<< std::endl;
     for (auto it = operations.begin(); it != operations.end(); ++it) {
       delete it->second;
     }

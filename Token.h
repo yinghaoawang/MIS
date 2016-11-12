@@ -30,6 +30,11 @@ class Token {
       return v != nullptr;
     }
 
+    void SetVariableData(Data &d) {
+      if (!IsVariable()) return;
+      v->SetData(d);
+    }
+
     Data *GetData() {
       return data;
     };
@@ -57,34 +62,33 @@ class Token {
       return GetType() == Data::Type::Char || GetType() == Data::Type::String;
     }
 
-    long GetRealValue() {
-      if (IsVariable()) {
-        return (v->GetData())->GetRealValue();
+    long GetAsReal() {
+      if (v != nullptr) {
+        return (v->GetData())->GetAsReal();
       }
-      return data->GetRealValue();
+      return (data)->GetAsReal();
     }
 
-    double GetNumericValue() {
-      if (IsVariable()) {
-        return (v->GetData())->GetNumericValue();
+    double GetAsNumeric() {
+      if (v != nullptr) {
+        return (v->GetData())->GetAsNumeric();
       }
-      return data->GetNumericValue();
+      return (data)->GetAsNumeric();
     }
 
-    char GetChar() {
-      if (IsVariable()) {
-        return (v->GetData())->GetChar();
+    char GetAsChar() {
+      if (v != nullptr) {
+        return (v->GetData())->GetAsChar();
       }
-      return (data)->GetChar();
+      return (data)->GetAsChar();
     }
 
-    char *GetString() {
-      if (IsVariable()) {
-        return (v->GetData())->GetString();
+    char *GetAsString() {
+      if (v != nullptr) {
+        return (v->GetData())->GetAsString();
       }
-      return data->GetString();
+      return (data)->GetAsString();
     }
-
 };
 
 #endif

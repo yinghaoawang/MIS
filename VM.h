@@ -9,35 +9,32 @@
 #include "Label.h"
 #include "Operation.h"
 #include "OperationFactory.h"
+#include "ParserFactory.h"
 #include "Parser.h"
 #include "Util.h"
+#include "Cache.h"
 
 class VM {
   private:
     OperationFactory *operation_factory;
-    Parser parser;
-
-    std::vector<Operation*> operations;
-    std::map<std::string, Variable*> variables;
-    std::map<std::string, Label*> labels;
-
+    ParserFactory *parser_factory;
+    Cache *cache;
   public:
     VM() {
       Init();
     }
     void Init() {
+      cache = new Cache();
       operation_factory = new OperationFactory();
-      parser = Parser(operations, variables, labels);
-    }
-    ~VM() {
-      for (auto it = operations.begin(); it != operations.end(); ++it) { delete *it; }
-      for (auto it = variables.begin(); it != variables.end(); ++it) { delete it->second; }
-      for (auto it = labels.begin(); it != labels.end(); ++it) { delete it->second; }
+      parser_factory = new ParserFactory();
+      //TODO hardcode
+      cache->variables["str"] = new Variable(1.0);
     }
 
     void PrintOperations() {
-      std::cout << "printop" << std::endl;
-      for (auto it = operations.begin(); it != operations.end(); ++it) {
+      std::cout << "printing operations:" << std::endl;
+      std::cout << "variables: " << cache->variables.size() << std::endl;
+      for (auto it = cache->operations.begin(); it != cache->operations.end(); ++it) {
         (*it)->Execute();
       }
     }
@@ -49,19 +46,19 @@ class VM {
         return;
       }
 
-      int line_number = 1;
+      int line_number;
       std::string op_name;
       std::string line;
-      for (;ifs.good(); ++line_number) {
+      for (line_number = 1;ifs.good(); ++line_number) {
 
-        getline(ifs, line);
-        auto op = parser.ParseOp(line);
+        get_opname_line(ifs, op_name, line);
+        auto op = parser_factory->GetParser(op_name)->ParseOp(cache, line);
 
         if (op == nullptr) {
           continue;
         }
 
-        operations.push_back(op);
+        cache->operations.push_back(op);
       }
 
       PrintOperations();

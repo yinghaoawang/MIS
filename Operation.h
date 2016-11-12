@@ -65,6 +65,19 @@ class AddOperation : public Operation {
     virtual void Execute() {
       // TODO
       std::cout << "this is an add operation" << std::endl;
+      double sum = 0.0;
+      Token *dest_tok = &params.front();
+      for (auto it = params.begin(); it != params.end(); ++it) {
+        if (it == params.begin()) continue;
+
+        if (it->IsNumeric()) sum += it->GetAsNumeric();
+        if (it->IsReal()) sum += it->GetAsReal();
+      }
+      Data *data;
+      if (dest_tok->IsNumeric()) data = new Data((double)sum);
+      if (dest_tok->IsReal()) data = new Data((long)sum);
+      dest_tok->SetVariableData(*data);
+      std::cout << dest_tok->GetAsNumeric() << std::endl;
     }
 };
 
@@ -72,8 +85,6 @@ class SubOperation : public Operation {
   public:
     SubOperation() { Init(); }
     virtual void Init() {
-      min_params = 3;
-      max_params = 3;
     }
 
     virtual bool HasValidType() {
@@ -96,8 +107,7 @@ class SubOperation : public Operation {
       return o;
     }
     virtual void Execute() {
-      // TODO
-      std::cout << "this is not an add operation OH NO" << std::endl;
+      std::cout << "this is a sub operation" << std::endl;
     }
 };
 

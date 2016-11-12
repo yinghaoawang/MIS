@@ -46,10 +46,10 @@ class Data {
       if (type == Type::String) free(str);
     }
 
-    double GetNumericValue() { return value.d; }
-    long GetRealValue() { return value.l; }
-    char GetChar() { return value.c; }
-    char *GetString() { return value.s; }
+    double GetAsNumeric() { return value.d; }
+    long GetAsReal() { return value.l; }
+    char GetAsChar() { return value.c; }
+    char *GetAsString() { return value.s; }
 };
 
 #endif
