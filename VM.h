@@ -8,16 +8,14 @@
 #include "Variable.h"
 #include "Label.h"
 #include "Operation.h"
+#include "OperationFactory.h"
 #include "Parser.h"
-#include "AbstractFactory.h"
-#include "FactoryProducer.h"
 #include "Util.h"
 
 class VM {
   private:
-    FactoryProducer factory_producer;
-    AbstractFactory *operation_factory;
-    AbstractFactory *parser_factory;
+    OperationFactory *operation_factory;
+    Parser parser;
 
     std::vector<Operation*> operations;
     std::map<std::string, Variable*> variables;
@@ -27,24 +25,22 @@ class VM {
     VM() {
       Init();
     }
+    void Init() {
+      operation_factory = new OperationFactory();
+      parser = Parser(operations, variables, labels);
+    }
     ~VM() {
       for (auto it = operations.begin(); it != operations.end(); ++it) { delete *it; }
       for (auto it = variables.begin(); it != variables.end(); ++it) { delete it->second; }
       for (auto it = labels.begin(); it != labels.end(); ++it) { delete it->second; }
-      delete parser_factory;
-      delete operation_factory;
-    }
-    void Init() {
-      factory_producer = FactoryProducer();
-      operation_factory = factory_producer.GetFactory("OPERATION");
-      parser_factory = factory_producer.GetFactory("PARSER");
     }
 
     void PrintOperations() {
       std::cout << "printop" << std::endl;
       for (auto it = operations.begin(); it != operations.end(); ++it) {
         (*it)->Execute();
-      } }
+      }
+    }
 
     void ReadFile(char* filename) {
       std::ifstream ifs(filename);
@@ -53,19 +49,19 @@ class VM {
         return;
       }
 
+      int line_number = 1;
       std::string op_name;
       std::string line;
-      while (ifs.good()) {
-        get_opname_line(ifs, op_name, line);
-        auto parser = parser_factory->GetParser(op_name);
-        if (parser == nullptr) {
-          std::cerr << "unrecognized operation " << op_name << " from parser" << std::endl;
-          delete parser;
+      for (;ifs.good(); ++line_number) {
+
+        getline(ifs, line);
+        auto op = parser.ParseOp(line);
+
+        if (op == nullptr) {
           continue;
         }
-        Operation *op = parser->ParseOp(line);
-        if (op != nullptr) operations.push_back(op);
-        delete parser;
+
+        operations.push_back(op);
       }
 
       PrintOperations();

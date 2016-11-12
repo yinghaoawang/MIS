@@ -4,12 +4,9 @@
 #include <cstring>
 
 class Data {
-  private:
-    char* str;
-
   public:
     enum class Type {
-      Numeric, Real, Label, Char, String
+      Numeric, Real, Label, Char, String, Any
     };
 
     union Value {
@@ -19,9 +16,16 @@ class Data {
       char *s;
     };
 
+  private:
+    char* str;
     Type type;
     Value value;
 
+  public:
+    Data(Data const &data) {
+      type = data.type;
+      value = data.value;
+    }
     Data(double d) { type = Type::Numeric; value.d = d; }
     Data(long l) { type = Type::Real; value.l = l; }
     Data(char c) { type = Type::Char; value.c = c; }
@@ -30,6 +34,12 @@ class Data {
       value.s = str;
       str = (char*)malloc(sizeof(char) * strlen(s) + 1);
       strcpy(str, s);
+    }
+    Type GetType() {
+      return type;
+    }
+    Value Value() {
+      return value;
     }
 
     ~Data() {

@@ -1,6 +1,7 @@
 #include "OperationFactory.h"
 #include "Operation.h"
 
+// TODO initialize block doesn't work
 std::map<std::string, Operation*> OperationFactory::operations;
 bool OperationFactory::initialized;
 
@@ -24,6 +25,7 @@ Operation* OperationFactory::GetOperation(std::string str) {
 OperationFactory::~OperationFactory() {
   if (initialized) {
     initialized = false;
+    std::cout << "???"<< std::endl;
     for (auto it = operations.begin(); it != operations.end(); ++it) {
       delete it->second;
     }

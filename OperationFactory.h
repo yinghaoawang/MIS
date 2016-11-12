@@ -1,10 +1,11 @@
 #ifndef OPERATIONFACTORY_H_
 #define OPERATIONFACTORY_H_
 
-#include "AbstractFactory.h"
+#include <string>
 #include <map>
+#include "Operation.h"
 
-class OperationFactory : public AbstractFactory {
+class OperationFactory {
   private:
     static std::map<std::string, Operation*> operations;
     static bool initialized;

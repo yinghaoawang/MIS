@@ -13,9 +13,20 @@ class Operation {
     virtual void Init()=0;
     virtual Operation* Clone()=0;
     virtual void Execute()=0;
-    virtual void SetParams(std::vector<Token> tok) {
-      for (auto it = tok.begin(); it != tok.end(); ++it) {
-        if (it == tok.begin()) continue; // hardcode of skipping first (instruction name)
+    virtual bool HasValidType()=0;
+    virtual bool HasValidParams() {
+      if (params.size() < min_params || params.size() > max_params) {
+        std::cerr << "got " << params.size() << " expected " << min_params << "-" << max_params << ": ";
+        return false;
+      }
+      if (!HasValidType()) {
+        std::cerr << "invalid type: ";
+        return false;
+      }
+      return true;
+    }
+    virtual void SetParams(std::vector<Token> &param_tok) {
+      for (auto it = param_tok.begin(); it != param_tok.end(); ++it) {
         params.push_back(*it);
       }
     }
@@ -25,16 +36,32 @@ class Operation {
 
 class AddOperation : public Operation {
   public:
-    AddOperation() {}
+    AddOperation() { Init(); }
     virtual void Init() {
       min_params = 3;
       max_params = 13;
     }
+
     virtual Operation* Clone() {
       AddOperation *o = new AddOperation();
       o->Init();
       return o;
     }
+
+    virtual bool HasValidType() {
+      int i = 1;
+      for (auto it = params.begin(); it != params.end(); ++it, ++i) {
+        if (i == 1) {
+          if (!it->IsVariable()) return false;
+          if (!it->IsNumber()) return false;
+        } else {
+          if (!it->IsNumber()) return false;
+        }
+        ++i;
+      }
+      return true;
+    }
+
     virtual void Execute() {
       // TODO
       std::cout << "this is an add operation" << std::endl;
@@ -43,11 +70,26 @@ class AddOperation : public Operation {
 
 class SubOperation : public Operation {
   public:
-    SubOperation() {}
+    SubOperation() { Init(); }
     virtual void Init() {
       min_params = 3;
       max_params = 3;
     }
+
+    virtual bool HasValidType() {
+      int i = 1;
+      for (auto it = params.begin(); it != params.end(); ++it, ++i) {
+        if (i == 1) {
+          if (!it->IsVariable()) return false;
+          if (!it->IsNumber()) return false;
+        } else {
+          if (!it->IsNumber()) return false;
+        }
+        ++i;
+      }
+      return true;
+    }
+
     virtual Operation* Clone() {
       SubOperation *o = new SubOperation();
       o->Init();

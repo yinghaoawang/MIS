@@ -12,53 +12,77 @@ class Token {
     Label *l;
 
   public:
-    friend class TokenManager;
-    Token(double d) { data = new Data(d); }
-    Token(long l) { data = new Data(l); }
-    Token(char c) { data = new Data(c); }
-    Token(char *s) { data = new Data(s); }
+    Token(double d) { v = nullptr; l = nullptr; data = new Data(d); }
+    Token(long lo) { v = nullptr; l = nullptr; data = new Data(lo); }
+    Token(char c) { v = nullptr; l = nullptr; data = new Data(c); }
+    Token(char *s) { v = nullptr; l = nullptr; data = new Data(s); }
     Token(Variable *v) {
+      l = nullptr;
       this->v = v;
       data = v->GetData();
     }
     Token(Label *l) {
+      v = nullptr;
       this->l = l;
+    }
+
+    bool IsVariable() {
+      return v != nullptr;
     }
 
     Data *GetData() {
       return data;
     };
 
-};
-
-class TokenManager {
-  public:
-    long GetRealValue(Token const &tok) {
-      if (tok.v != nullptr) {
-        return (tok.v->GetData())->GetRealValue();
-      }
-      return (tok.data)->GetRealValue();
+    Data::Type GetType() {
+      return data->GetType();
     }
 
-    double GetNumericValue(Token const &tok) {
-      if (tok.v != nullptr) {
-        return (tok.v->GetData())->GetNumericValue();
-      }
-      return (tok.data)->GetNumericValue();
+    bool IsNumeric() {
+      return GetType() == Data::Type::Numeric;
+    }
+    bool IsReal() {
+      return GetType() == Data::Type::Real;
+    }
+    bool IsChar() {
+      return GetType() == Data::Type::Char;
+    }
+    bool IsString() {
+      return GetType() == Data::Type::String;
+    }
+    bool IsNumber() {
+      return GetType() == Data::Type::Numeric || GetType() == Data::Type::Real;
+    }
+    bool IsCharSequence() {
+      return GetType() == Data::Type::Char || GetType() == Data::Type::String;
     }
 
-    char GetChar(Token const &tok) {
-      if (tok.v != nullptr) {
-        return (tok.v->GetData())->GetChar();
+    long GetRealValue() {
+      if (IsVariable()) {
+        return (v->GetData())->GetRealValue();
       }
-      return (tok.data)->GetChar();
+      return data->GetRealValue();
     }
 
-    char *GetString(Token const &tok) {
-      if (tok.v != nullptr) {
-        return (tok.v->GetData())->GetString();
+    double GetNumericValue() {
+      if (IsVariable()) {
+        return (v->GetData())->GetNumericValue();
       }
-      return (tok.data)->GetString();
+      return data->GetNumericValue();
+    }
+
+    char GetChar() {
+      if (IsVariable()) {
+        return (v->GetData())->GetChar();
+      }
+      return (data)->GetChar();
+    }
+
+    char *GetString() {
+      if (IsVariable()) {
+        return (v->GetData())->GetString();
+      }
+      return data->GetString();
     }
 
 };

@@ -8,6 +8,11 @@ class Variable {
     Data *data;
 
   public:
+    Variable(Data d) {
+      data = (Data*)malloc(sizeof(Data));
+      memcpy(data, new Data(d), sizeof(Data));
+    }
+    ~Variable() { free(data); }
     Data *GetData() { return data; }
 };
 
