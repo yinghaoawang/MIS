@@ -1,0 +1,7 @@
+VAR $myvar, NUMERIC, 0.0001
+LABEL first
+ADD $myvar, $myvar, .003
+JMP lab1
+ADD $myvar, $myvar, .005
+SLEEP 5
+JMP first

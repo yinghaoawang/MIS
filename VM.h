@@ -33,8 +33,8 @@ class VM {
       std::cout << "Executing operations: " << std::endl;
       std::cout << "variables: " << cache->variables.size() << std::endl;
 
-      for (auto it = cache->operations.begin(); it != cache->operations.end(); ++it) {
-        (*it)->Execute();
+      for (int prog_counter = 0; prog_counter < cache->GetOperationSize(); ++prog_counter) {
+        cache->GetOperation(prog_counter)->Execute(prog_counter);
       }
     }
 
@@ -61,6 +61,11 @@ class VM {
 
         cache->operations.push_back(op);
         ++op_index;
+      }
+      try {
+        cache->CheckLabelValidity();
+      } catch(std::exception &e) {
+         std::cerr << "error: " << e.what() << std::endl;
       }
       std::cout << std::endl;
       ifs.close();

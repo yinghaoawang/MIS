@@ -1,3 +1,4 @@
-VAR $myvar, NUMERIC, 1033.0
+VAR $myvar, NUMERIC, 1033.2
 VAR $yourvar, REAL, 5
 ADD $myvar, $myvar, $yourvar
+ADD $myvar, $myvar, 1.0

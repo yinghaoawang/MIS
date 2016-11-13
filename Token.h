@@ -26,8 +26,16 @@ class Token {
       this->l = l;
     }
 
+    Label *GetLabel() {
+      return l;
+    }
+
     Variable *GetVariable() {
       return v;
+    }
+
+    bool IsLabel() {
+      return v != nullptr;
     }
 
     bool IsVariable() {

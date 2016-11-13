@@ -46,7 +46,15 @@ inline bool str_is_char(std::string const &str) {
   return true;
 }
 
-/* i.e LABEL1, Label1, a1l2b3 */
+inline bool str_is_label(std::string const &str) {
+  if (str.size() < 1) return false;
+  if (!isalpha(str[0])) return false;
+  for (int i = 0; i < str.size(); ++i) {
+    if (!isalnum(str[i])) return false;
+  }
+  return true;
+}
+
 inline bool str_is_string(std::string const &str) {
   if (str[0] != '\"') return false;
   if (str[str.size()-1] != '\"') return false;

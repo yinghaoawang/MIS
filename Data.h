@@ -6,7 +6,7 @@
 class Data {
   public:
     enum class Type {
-      Numeric, Real, Label, Char, String, Any
+      Numeric, Real, Char, String
     };
 
     union Value {

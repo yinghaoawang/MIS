@@ -51,13 +51,10 @@ class Parser {
 
       std::vector<Token> tokens;
 
-      std::cout << op_name << ": ";
-      std::cout << line << std::endl;
-
       try {
         tokens = Tokenize(cache, line);
       } catch (std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        std::cerr << "error: " << e.what() << std::endl;
         return nullptr;
       }
 
@@ -96,6 +93,101 @@ class AddParser : public Parser {
       for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {
         tokens.push_back(StrToNumTok(cache, *it));
       }
+
+      return tokens;
+    }
+};
+
+class SleepParser : public Parser {
+  public:
+    SleepParser() {}
+    virtual Parser *Clone() {
+      Parser *p = new SleepParser();
+      return p;
+    }
+    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+      std::vector<Token> tokens;
+      std::vector<std::string> str_toks = split_line(str);
+
+      remove_vector_front(str_toks);
+      HasValidParamsCount(str_toks.size(), 1, 1);
+
+      Token t = StrToNumTok(cache, str_toks.front());
+      tokens.push_back(t);
+      return tokens;
+    }
+
+};
+
+class JmpParser : public Parser {
+  public:
+    JmpParser() {}
+    virtual Parser *Clone() { return new JmpParser(); }
+    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+      std::vector<Token> tokens;
+      std::vector<std::string> str_toks = split_line(str);
+
+      remove_vector_front(str_toks);
+      HasValidParamsCount(str_toks.size(), 1, 1);
+
+      std::string label_name = str_toks.front();
+      if (!str_is_label(label_name)) {
+        std::string str_err = "invalid label name for jump: " + label_name;
+        throw std::runtime_error(str_err);
+      }
+
+      Label *label;
+      if (cache->HasLabel(label_name)) {
+        label = cache->GetLabel(label_name);
+      } else {
+        label = new Label(label_name, -1);
+        cache->SetLabel(label);
+      }
+
+      Token t = Token(label);
+      tokens.push_back(t);
+      return tokens;
+    }
+};
+
+class LabelParser : public Parser {
+  public:
+    LabelParser() {}
+    virtual Parser *Clone() {
+      Parser *p = new LabelParser();
+      return p;
+    }
+    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+      std::vector<Token> tokens;
+      std::vector<std::string> str_toks = split_line(str);
+
+      remove_vector_front(str_toks);
+      HasValidParamsCount(str_toks.size(), 1, 1);
+
+      std::string label_name = str_toks.front();
+      if (!str_is_label(label_name)) {
+        std::string str_err = "invalid label name: " + label_name;
+        throw std::runtime_error(str_err);
+      }
+
+      int op_index = cache->GetOperationSize();
+
+      Label *label;
+      if (cache->HasLabel(label_name)) {
+        Label *cached_label = cache->GetLabel(label_name);
+        if (cached_label->GetIndex() >= 0) {
+          std::string str_err = "label already exists " + label_name;
+          throw std::runtime_error(str_err);
+        }
+        cached_label->SetIndex(op_index);
+        label = cached_label;
+      } else {
+        label = new Label(label_name, op_index);
+        cache->SetLabel(label);
+      }
+
+      Token t = Token(label);
+      tokens.push_back(t);
 
       return tokens;
     }

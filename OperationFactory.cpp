@@ -13,6 +13,9 @@ void OperationFactory::Init() {
     operations["ADD"] = new AddOperation();
     operations["SUB"] = new SubOperation();
     operations["VAR"] = new VarOperation();
+    operations["LABEL"] = new LabelOperation();
+    operations["SLEEP"] = new SleepOperation();
+    operations["JMP"] = new JmpOperation();
   }
 }
 

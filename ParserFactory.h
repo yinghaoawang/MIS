@@ -37,6 +37,9 @@ void ParserFactory::Init() {
     parsers["ADD"] = new AddParser();
     parsers["SUB"] = new SubParser();
     parsers["VAR"] = new VarParser();
+    parsers["LABEL"] = new LabelParser();
+    parsers["SLEEP"] = new SleepParser();
+    parsers["JMP"] = new JmpParser();
   }
 }
 
