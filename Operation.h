@@ -18,6 +18,20 @@ class Operation {
     }
 };
 
+class VarOperation : public Operation {
+  public:
+    VarOperation() { Init(); }
+    virtual void Init() {}
+    virtual Operation *Clone() {
+      VarOperation *o = new VarOperation();
+      o->Init();
+      return o;
+    }
+    virtual void Execute() {
+      std::cout << "this is a var operation: does nothing at execute" << std::endl;
+    }
+};
+
 class AddOperation : public Operation {
   public:
     AddOperation() { Init(); }
@@ -31,7 +45,6 @@ class AddOperation : public Operation {
     }
 
     virtual void Execute() {
-      // TODO
       std::cout << "this is an add operation" << std::endl;
       double dsum = 0.0;
       long lsum = 0;

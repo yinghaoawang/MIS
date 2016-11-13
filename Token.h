@@ -15,7 +15,7 @@ class Token {
     Token(double d) { v = nullptr; l = nullptr; data = new Data(d); }
     Token(long lo) { v = nullptr; l = nullptr; data = new Data(lo); }
     Token(char c) { v = nullptr; l = nullptr; data = new Data(c); }
-    Token(char *s) { v = nullptr; l = nullptr; data = new Data(s); }
+    Token(char *s, int size) { v = nullptr; l = nullptr; data = new Data(s, size); }
     Token(Variable *v) {
       l = nullptr;
       this->v = v;
@@ -24,6 +24,10 @@ class Token {
     Token(Label *l) {
       v = nullptr;
       this->l = l;
+    }
+
+    Variable *GetVariable() {
+      return v;
     }
 
     bool IsVariable() {

@@ -36,6 +36,7 @@ void ParserFactory::Init() {
     initialized = true;
     parsers["ADD"] = new AddParser();
     parsers["SUB"] = new SubParser();
+    parsers["VAR"] = new VarParser();
   }
 }
 

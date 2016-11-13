@@ -12,6 +12,7 @@ void OperationFactory::Init() {
     initialized = true;
     operations["ADD"] = new AddOperation();
     operations["SUB"] = new SubOperation();
+    operations["VAR"] = new VarOperation();
   }
 }
 

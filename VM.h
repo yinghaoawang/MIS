@@ -27,8 +27,6 @@ class VM {
       cache = new Cache();
       operation_factory = new OperationFactory();
       parser_factory = new ParserFactory();
-      //TODO hardcode
-      cache->variables["str"] = new Variable(5.0);
     }
 
     void PrintOperations() {
@@ -37,6 +35,7 @@ class VM {
       for (auto it = cache->operations.begin(); it != cache->operations.end(); ++it) {
         (*it)->Execute();
       }
+      std::cout << "variables: " << cache->variables.size() << std::endl;
     }
 
     void ReadFile(char* filename) {
@@ -53,7 +52,7 @@ class VM {
         get_opname_line(ifs, op_name, line);
         if (trim(op_name).empty()) continue;
         if (!parser_factory->HasParser(op_name)) {
-          std::cerr << "invalid operation: " << op_name << std::endl;
+          std::cerr << "unrecognized operation: " << op_name << std::endl;
           continue;
         }
         auto op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);

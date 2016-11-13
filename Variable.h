@@ -6,16 +6,25 @@
 class Variable {
   private:
     Data *data;
+    char *name;
 
   public:
-    Variable(Data d) {
+    Variable(std::string &str_name, Data d) {
+      name = (char*)malloc(sizeof(char) * str_name.size() + 1);
+      strcpy(name, str_name.c_str());
       Init(d);
+    }
+    ~Variable() {
+      free(data);
+      free(name);
+    }
+    char *GetName() {
+      return name;
     }
     void Init(Data d) {
       data = (Data*)malloc(sizeof(Data));
       data = new Data(d);
     }
-    ~Variable() { free(data); }
     void SetData(Data &d) {
       delete data;
       Init(d);
