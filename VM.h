@@ -31,7 +31,7 @@ class VM {
 
     void ExecuteOperations() {
       std::cout << "Executing operations: " << std::endl;
-      std::cout << "variables: " << cache->variables.size() << std::endl;
+      std::cout << "variables: " << cache->GetVariableSize() << std::endl;
 
       for (int prog_counter = 0; prog_counter < cache->GetOperationSize(); ++prog_counter) {
         cache->GetOperation(prog_counter)->Execute(prog_counter);
@@ -59,7 +59,7 @@ class VM {
         auto op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);
         if (op == nullptr) continue;
 
-        cache->operations.push_back(op);
+        cache->PushOperation(op);
         ++op_index;
       }
       try {

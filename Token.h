@@ -12,95 +12,34 @@ class Token {
     Label *l;
 
   public:
-    Token(double d) { v = nullptr; l = nullptr; data = new Data(d); }
-    Token(long lo) { v = nullptr; l = nullptr; data = new Data(lo); }
-    Token(char c) { v = nullptr; l = nullptr; data = new Data(c); }
-    Token(char *s, int size) { v = nullptr; l = nullptr; data = new Data(s, size); }
-    Token(Variable *v) {
-      l = nullptr;
-      this->v = v;
-      data = v->GetData();
-    }
-    Token(Label *l) {
-      v = nullptr;
-      this->l = l;
-    }
+    Token(double);
+    Token(long);
+    Token(char);
+    Token(char*, int);
+    Token(Variable*);
+    Token(Label*);
 
-    Label *GetLabel() {
-      return l;
-    }
+    Label *GetLabel();
+    bool IsLabel();
 
-    Variable *GetVariable() {
-      return v;
-    }
+    Variable *GetVariable();
+    bool IsVariable();
+    void SetVariableData(Data&);
 
-    bool IsLabel() {
-      return v != nullptr;
-    }
+    Data *GetData();
+    Data::Type GetType();
 
-    bool IsVariable() {
-      return v != nullptr;
-    }
+    bool IsNumeric();
+    bool IsReal();
+    bool IsChar();
+    bool IsString();
+    bool IsNumber();
+    bool IsCharSequence();
 
-    void SetVariableData(Data &d) {
-      if (!IsVariable()) return;
-      v->SetData(d);
-    }
-
-    Data *GetData() {
-      return data;
-    };
-
-    Data::Type GetType() {
-      return data->GetType();
-    }
-
-    bool IsNumeric() {
-      return GetType() == Data::Type::Numeric;
-    }
-    bool IsReal() {
-      return GetType() == Data::Type::Real;
-    }
-    bool IsChar() {
-      return GetType() == Data::Type::Char;
-    }
-    bool IsString() {
-      return GetType() == Data::Type::String;
-    }
-    bool IsNumber() {
-      return GetType() == Data::Type::Numeric || GetType() == Data::Type::Real;
-    }
-    bool IsCharSequence() {
-      return GetType() == Data::Type::Char || GetType() == Data::Type::String;
-    }
-
-    long GetAsReal() {
-      if (v != nullptr) {
-        return (v->GetData())->GetAsReal();
-      }
-      return (data)->GetAsReal();
-    }
-
-    double GetAsNumeric() {
-      if (v != nullptr) {
-        return (v->GetData())->GetAsNumeric();
-      }
-      return (data)->GetAsNumeric();
-    }
-
-    char GetAsChar() {
-      if (v != nullptr) {
-        return (v->GetData())->GetAsChar();
-      }
-      return (data)->GetAsChar();
-    }
-
-    char *GetAsString() {
-      if (v != nullptr) {
-        return (v->GetData())->GetAsString();
-      }
-      return (data)->GetAsString();
-    }
+    long GetAsReal();
+    double GetAsNumeric();
+    char GetAsChar();
+    char *GetAsString();
 };
 
 #endif
