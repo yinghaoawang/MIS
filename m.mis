@@ -1,0 +1,2 @@
+ADD $str, 1, 2, 3.2
+ADD $str, $str, 5.89

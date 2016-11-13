@@ -12,7 +12,7 @@ class Cache {
     std::map<std::string, Variable*> variables;
     std::map<std::string, Label*> labels;
     bool HasVariable(std::string str) {
-      if (variables.find(str) != variables.end()) return false;
+      if (variables.find(str) == variables.end()) return false;
       return true;
     }
     Variable *GetVariable(std::string str) {

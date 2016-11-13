@@ -6,40 +6,22 @@
 
 class Operation {
   protected:
-    int min_params;
-    int max_params;
     std::vector<Token> params;
   public:
     virtual void Init()=0;
     virtual Operation* Clone()=0;
     virtual void Execute()=0;
-    virtual bool HasValidType()=0;
-    virtual bool HasValidParams() {
-      if (params.size() < min_params || params.size() > max_params) {
-        std::cerr << "got " << params.size() << " expected " << min_params << "-" << max_params << ": ";
-        return false;
-      }
-      if (!HasValidType()) {
-        std::cerr << "invalid type: ";
-        return false;
-      }
-      return true;
-    }
     virtual void SetParams(std::vector<Token> &param_tok) {
       for (auto it = param_tok.begin(); it != param_tok.end(); ++it) {
         params.push_back(*it);
       }
     }
-    int GetMinParams() { return min_params; }
-    int GetMaxParams() { return max_params; }
 };
 
 class AddOperation : public Operation {
   public:
     AddOperation() { Init(); }
     virtual void Init() {
-      min_params = 3;
-      max_params = 13;
     }
 
     virtual Operation* Clone() {
@@ -48,34 +30,28 @@ class AddOperation : public Operation {
       return o;
     }
 
-    virtual bool HasValidType() {
-      int i = 1;
-      for (auto it = params.begin(); it != params.end(); ++it, ++i) {
-        if (i == 1) {
-          if (!it->IsVariable()) return false;
-          if (!it->IsNumber()) return false;
-        } else {
-          if (!it->IsNumber()) return false;
-        }
-        ++i;
-      }
-      return true;
-    }
-
     virtual void Execute() {
       // TODO
       std::cout << "this is an add operation" << std::endl;
-      double sum = 0.0;
+      double dsum = 0.0;
+      long lsum = 0;
       Token *dest_tok = &params.front();
       for (auto it = params.begin(); it != params.end(); ++it) {
         if (it == params.begin()) continue;
-
-        if (it->IsNumeric()) sum += it->GetAsNumeric();
-        if (it->IsReal()) sum += it->GetAsReal();
+        if (it->IsNumeric()) {
+        std::cout << "numeric: " << it->GetAsNumeric() << std::endl;
+          dsum += it->GetAsNumeric();
+          lsum += it->GetAsNumeric();
+        }
+        if (it->IsReal()) {
+        std::cout << "real: " << it->GetAsReal() << std::endl;
+          dsum += it->GetAsReal();
+          lsum += it->GetAsReal();
+        }
       }
       Data *data;
-      if (dest_tok->IsNumeric()) data = new Data((double)sum);
-      if (dest_tok->IsReal()) data = new Data((long)sum);
+      if (dest_tok->IsNumeric()) data = new Data(dsum);
+      if (dest_tok->IsReal()) data = new Data(lsum);
       dest_tok->SetVariableData(*data);
       std::cout << dest_tok->GetAsNumeric() << std::endl;
     }
@@ -87,27 +63,41 @@ class SubOperation : public Operation {
     virtual void Init() {
     }
 
-    virtual bool HasValidType() {
-      int i = 1;
-      for (auto it = params.begin(); it != params.end(); ++it, ++i) {
-        if (i == 1) {
-          if (!it->IsVariable()) return false;
-          if (!it->IsNumber()) return false;
-        } else {
-          if (!it->IsNumber()) return false;
-        }
-        ++i;
-      }
-      return true;
-    }
-
     virtual Operation* Clone() {
       SubOperation *o = new SubOperation();
       o->Init();
       return o;
     }
     virtual void Execute() {
-      std::cout << "this is a sub operation" << std::endl;
+      std::cout << "this is an sub operation" << std::endl;
+
+      Token *dest_tok = &params.front();
+
+      double ddiff = 0.0;
+      long ldiff = 0;
+
+      if (params[1].IsNumeric()) {
+        ddiff += params[1].GetAsNumeric();
+        ldiff += params[1].GetAsNumeric();
+      } else {
+        ddiff += params[1].GetAsReal();
+        ldiff += params[1].GetAsReal();
+      }
+
+      if (params[2].IsNumeric()) {
+        ddiff -= params[2].GetAsNumeric();
+        ldiff -= params[2].GetAsNumeric();
+      } else {
+        ddiff -= params[2].GetAsNumeric();
+        ldiff -= params[2].GetAsNumeric();
+      }
+
+      Data *data;
+      if (dest_tok->IsNumeric()) data = new Data(ddiff);
+      if (dest_tok->IsReal()) data = new Data(ldiff);
+
+      dest_tok->SetVariableData(*data);
+      std::cout << dest_tok->GetAsNumeric() << std::endl;
     }
 };
 

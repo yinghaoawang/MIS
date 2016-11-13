@@ -12,7 +12,8 @@ class ParserFactory {
     ParserFactory();
     ~ParserFactory();
     void Init();
-    Parser* GetParser(std::string);
+    Parser* GetParser(std::string&);
+    bool HasParser(std::string&);
 };
 
 std::map<std::string, Parser*> ParserFactory::parsers;
@@ -38,8 +39,13 @@ void ParserFactory::Init() {
   }
 }
 
-Parser* ParserFactory::GetParser(std::string str) {
-  if (parsers.find(str) != parsers.end()) {
+bool ParserFactory::HasParser(std::string &str) {
+  if (parsers.find(str) == parsers.end()) return false;
+  return true;
+}
+
+Parser* ParserFactory::GetParser(std::string &str) {
+  if (HasParser(str)) {
     return parsers[str]->Clone();
   }
   return nullptr;

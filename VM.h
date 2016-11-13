@@ -28,7 +28,7 @@ class VM {
       operation_factory = new OperationFactory();
       parser_factory = new ParserFactory();
       //TODO hardcode
-      cache->variables["str"] = new Variable(1.0);
+      cache->variables["str"] = new Variable(5.0);
     }
 
     void PrintOperations() {
@@ -46,19 +46,23 @@ class VM {
         return;
       }
 
-      int line_number;
+      int op_index = 0;
       std::string op_name;
       std::string line;
-      for (line_number = 1;ifs.good(); ++line_number) {
-
+      while (ifs.good()) {
         get_opname_line(ifs, op_name, line);
-        auto op = parser_factory->GetParser(op_name)->ParseOp(cache, line);
-
+        if (trim(op_name).empty()) continue;
+        if (!parser_factory->HasParser(op_name)) {
+          std::cerr << "invalid operation: " << op_name << std::endl;
+          continue;
+        }
+        auto op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);
         if (op == nullptr) {
           continue;
         }
 
         cache->operations.push_back(op);
+        ++op_index;
       }
 
       PrintOperations();
