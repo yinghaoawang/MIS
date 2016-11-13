@@ -128,8 +128,7 @@ class VarParser : public Parser {
         double d = std::stod(var_data);
         data = Data(d);
       } else if (var_type == "REAL") {
-        //long l = stol(var_data);
-        long l = 5;
+        long l = stol(var_data);
         data = Data(l);
       } else if (var_type == "CHAR") {
         char c = var_data[0];
