@@ -29,23 +29,24 @@ class VM {
       parser_factory = new ParserFactory();
     }
 
-    void PrintOperations() {
-      std::cout << "printing operations:" << std::endl;
+    void ExecuteOperations() {
+      std::cout << "Executing operations: " << std::endl;
       std::cout << "variables: " << cache->variables.size() << std::endl;
+
       for (auto it = cache->operations.begin(); it != cache->operations.end(); ++it) {
         (*it)->Execute();
       }
-      std::cout << "variables: " << cache->variables.size() << std::endl;
     }
 
     void ReadFile(char* filename) {
       std::ifstream ifs(filename);
       if (!ifs.is_open()) {
-        std::cerr << "coudl not open shit" << std::endl;
+        std::cerr << "Could not open file " << filename << std::endl;
         return;
       }
 
-      int op_index = 0;
+      std::cout << "Reading file: " << filename << std::endl;
+      static int op_index = 0;
       std::string op_name;
       std::string line;
       while (ifs.good()) {
@@ -56,15 +57,12 @@ class VM {
           continue;
         }
         auto op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);
-        if (op == nullptr) {
-          continue;
-        }
+        if (op == nullptr) continue;
 
         cache->operations.push_back(op);
         ++op_index;
       }
-
-      PrintOperations();
+      std::cout << std::endl;
       ifs.close();
     }
 };

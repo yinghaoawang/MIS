@@ -30,7 +30,6 @@ class Parser {
 
       if (str_is_numeric(str)) {
         double d = std::stod(str);
-        std::cout << d << std::endl;
         return Token(d);
       }
 
@@ -125,9 +124,6 @@ class VarParser : public Parser {
     }
     Token VarToTok(std::string &var_name, std::string &var_type, std::string &var_data, int var_strlen) {
       Data data;
-        std::cout << var_data << std::endl;
-        std::cout << var_data << std::endl;
-        std::cout << var_data << std::endl;
       if (var_type == "NUMERIC") {
         double d = std::stod(var_data);
         data = Data(d);

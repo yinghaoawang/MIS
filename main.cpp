@@ -4,6 +4,10 @@
 
 int main(int argc, char* argv[]) {
   VM vm;
-  vm.ReadFile(argv[1]);
+  for (int i = 1; i < argc; ++i) {
+    vm.ReadFile(argv[i]);
+  }
+
+  vm.ExecuteOperations();
   return 0;
 }
