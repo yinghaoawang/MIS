@@ -1,7 +1,5 @@
 #include "OperationFactory.h"
-#include "Operation.h"
 
-// TODO initialize block doesn't work
 std::map<std::string, Operation*> OperationFactory::operations;
 bool OperationFactory::initialized;
 
@@ -19,10 +17,13 @@ void OperationFactory::Init() {
   }
 }
 
-Operation* OperationFactory::GetOperation(std::string str) {
-  if (operations.find(str) != operations.end()) {
-    return operations[str]->Clone();
-  }
+bool OperationFactory::HasOperation(const std::string &str) const {
+  if (operations.find(str) == operations.end()) return false;
+  return true;
+}
+
+Operation* OperationFactory::GetOperation(const std::string &str) const {
+  if (HasOperation(str)) return operations[str];
   return nullptr;
 }
 

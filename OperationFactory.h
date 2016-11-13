@@ -13,7 +13,8 @@ class OperationFactory {
     OperationFactory();
     ~OperationFactory();
     void Init();
-    Operation* GetOperation(std::string);
+    bool HasOperation(const std::string&) const;
+    Operation* GetOperation(const std::string&) const;
 };
 
 #endif

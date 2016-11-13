@@ -15,15 +15,15 @@ Data::Data(char *s, int size) {
   str = (char*)malloc(sizeof(char) * size);
   strcpy(str, s);
 }
-Data::Data(std::string str, int size) {
+Data::Data(const std::string &str, int size) {
   char *s = (char*)malloc(sizeof(char) * size);
   value.s = this->str;
 }
 
-Data::Type Data::GetType() {
+Data::Type Data::GetType() const {
   return type;
 }
-Data::Value Data::GetValue() {
+Data::Value Data::GetValue() const {
   return value;
 }
 
@@ -31,7 +31,7 @@ Data::~Data() {
   if (type == Type::String) free(str);
 }
 
-double Data::GetAsNumeric() { return value.d; }
-long Data::GetAsReal() { return value.l; }
-char Data::GetAsChar() { return value.c; }
-char *Data::GetAsString() { return value.s; }
+double Data::GetAsNumeric() const { return value.d; }
+long Data::GetAsReal() const { return value.l; }
+char Data::GetAsChar() const { return value.c; }
+char *Data::GetAsString() const { return value.s; }

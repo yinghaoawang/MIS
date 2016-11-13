@@ -15,31 +15,31 @@ class Token {
     Token(double);
     Token(long);
     Token(char);
-    Token(char*, int);
-    Token(Variable*);
-    Token(Label*);
+    Token(const char*, int);
+    Token(Variable* const);
+    Token(Label* const);
 
-    Label *GetLabel();
-    bool IsLabel();
+    Label *GetLabel() const;
+    bool IsLabel() const;
 
-    Variable *GetVariable();
-    bool IsVariable();
-    void SetVariableData(Data&);
+    Variable *GetVariable() const;
+    bool IsVariable() const;
+    void SetVariableData(const Data&);
 
-    Data *GetData();
-    Data::Type GetType();
+    Data *GetData() const;
+    Data::Type GetType() const;
 
-    bool IsNumeric();
-    bool IsReal();
-    bool IsChar();
-    bool IsString();
-    bool IsNumber();
-    bool IsCharSequence();
+    bool IsNumeric() const;
+    bool IsReal() const;
+    bool IsChar() const;
+    bool IsString() const;
+    bool IsNumber() const;
+    bool IsCharSequence() const;
 
-    long GetAsReal();
-    double GetAsNumeric();
-    char GetAsChar();
-    char *GetAsString();
+    long GetAsReal() const;
+    double GetAsNumeric() const;
+    char GetAsChar() const;
+    char *GetAsString() const;
 };
 
 #endif

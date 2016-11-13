@@ -8,16 +8,16 @@ class Label {
     int index;
     char *name;
   public:
-    Label(std::string&, int);
+    Label(const std::string&, int);
     ~Label();
     void Init(int);
 
-    char *GetName();
+    char *GetName() const;
 
     void SetIndex(int);
-    int GetIndex();
+    int GetIndex() const;
 
-    bool HasValidIndex();
+    bool HasValidIndex() const;
 };
 
 #endif

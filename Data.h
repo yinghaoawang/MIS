@@ -29,16 +29,16 @@ class Data {
     Data(long);
     Data(char);
     Data(char*, int);
-    Data(std::string, int);
+    Data(const std::string&, int);
     ~Data();
 
-    Type GetType();
-    Value GetValue();
+    Type GetType() const;
+    Value GetValue() const;
 
-    double GetAsNumeric();
-    long GetAsReal();
-    char GetAsChar();
-    char *GetAsString();
+    double GetAsNumeric() const;
+    long GetAsReal() const;
+    char GetAsChar() const;
+    char *GetAsString() const;
 };
 
 #endif

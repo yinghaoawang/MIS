@@ -12,47 +12,8 @@ class ParserFactory {
     ParserFactory();
     ~ParserFactory();
     void Init();
-    Parser* GetParser(std::string&);
-    bool HasParser(std::string&);
+    Parser* GetParser(const std::string&) const;
+    bool HasParser(const std::string&) const;
 };
-
-std::map<std::string, Parser*> ParserFactory::parsers;
-bool ParserFactory::initialized;
-
-ParserFactory::ParserFactory() { Init(); }
-
-ParserFactory::~ParserFactory() {
-  if (initialized) {
-    initialized = false;
-    for (auto it = parsers.begin(); it != parsers.end(); ++it) {
-      delete it->second;
-    }
-  }
-};
-
-
-void ParserFactory::Init() {
-  if (!initialized) {
-    initialized = true;
-    parsers["ADD"] = new AddParser();
-    parsers["SUB"] = new SubParser();
-    parsers["VAR"] = new VarParser();
-    parsers["LABEL"] = new LabelParser();
-    parsers["SLEEP"] = new SleepParser();
-    parsers["JMP"] = new JmpParser();
-  }
-}
-
-bool ParserFactory::HasParser(std::string &str) {
-  if (parsers.find(str) == parsers.end()) return false;
-  return true;
-}
-
-Parser* ParserFactory::GetParser(std::string &str) {
-  if (HasParser(str)) {
-    return parsers[str]->Clone();
-  }
-  return nullptr;
-}
 
 #endif

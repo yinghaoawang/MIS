@@ -12,24 +12,25 @@ class Cache {
     std::vector<Operation*> operations;
     std::map<std::string, Variable*> variables;
     std::map<std::string, Label*> labels;
+
   public:
-    Operation *GetOperation(int);
-    void PushOperation(Operation*);
-    int GetOperationSize();
+    Operation *GetOperation(int) const;
+    void PushOperation(Operation* const);
+    int GetOperationSize() const;
 
-    int GetVariableSize();
-    bool HasVariable(std::string&);
-    bool HasVariable(Variable*);
-    Variable *GetVariable(std::string&);
-    void SetVariable(Variable *V);
+    int GetVariableSize() const;
+    bool HasVariable(const std::string&) const;
+    bool HasVariable(const Variable* const) const;
+    Variable *GetVariable(const std::string&) const;
+    void SetVariable(Variable* const);
 
-    int GetLabelSize();
-    bool HasLabel(std::string&);
-    bool HasLabel(Label*);
-    Label *GetLabel(std::string&);
-    void SetLabel(Label*);
+    int GetLabelSize() const;
+    bool HasLabel(const std::string&) const;
+    bool HasLabel(const Label* const) const;
+    Label *GetLabel(const std::string&) const;
+    void SetLabel(Label* const);
 
-    bool CheckLabelValidity();
+    bool CheckLabelValidity() const;
 };
 
 #endif

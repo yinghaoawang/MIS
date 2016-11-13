@@ -13,7 +13,13 @@
 
 class Parser {
   protected:
-    bool HasValidParamsCount(int, int, int);
+    bool HasValidParamsCount(int params_count, int min, int max) {
+      if (params_count < min || params_count > max) {
+        std::string str_err = "wrong param count: expected " + std::to_string(min) + "-" + std::to_string(max) + ", got " + std::to_string(params_count);
+        throw std::runtime_error(str_err);
+      }
+      return true;
+    }
 
     Token StrToNumTok(Cache *cache, std::string &str) {
       if (str_is_variable(str)) {
@@ -64,14 +70,6 @@ class Parser {
       return operation;
     }
 };
-
-bool Parser::HasValidParamsCount(int params_count, int min, int max) {
-  if (params_count < min || params_count > max) {
-    std::string str_err = "wrong param count: expected " + std::to_string(min) + "-" + std::to_string(max) + ", got " + std::to_string(params_count);
-    throw std::runtime_error(str_err);
-  }
-  return true;
-}
 
 class AddParser : public Parser {
   public:
