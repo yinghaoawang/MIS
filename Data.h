@@ -30,7 +30,7 @@ class Data {
     Data(char);
     Data(char*, size_t);
     Data(const std::string&, size_t);
-    //~Data();
+    ~Data();
 
     Type GetType() const;
     Value GetValue() const;

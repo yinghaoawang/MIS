@@ -7,6 +7,13 @@
 #include <cstring>
 #include <sstream>
 
+/*
+ * Function: double_equals
+ * Description: checks equivalenc eof double within an epsilon value
+ */
+static inline bool double_equals(double a, double b, double epsilon = 0.00001) {
+  return std::abs(a - b) < epsilon;
+}
 
 /*
  * Function: remove_trailing_zeroes
@@ -228,10 +235,14 @@ static inline std::vector<std::string> split_line(const std::string &str) {
     int prev_i = curr_i;
     curr_i = tok_p-cstr+strlen(tok_p);
 
-    if (str[curr_i] == '\"') {
+    if (str[curr_i] == '\"' && prev_i != 0) {
       token = get_full_string_token(str, curr_i, prev_i);
+      trim(token);
     }
-    strings.push_back(token);
+    if (prev_i == 0 && str[curr_i] == '\"') {
+      curr_i--;
+    }
+    if (!token.empty()) strings.push_back(token);
     tok_p = strtok(NULL, delims);
   }
   delete cstr;

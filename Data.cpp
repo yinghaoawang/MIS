@@ -38,7 +38,7 @@ std::string Data::ToString() const {
   } else if (IsReal()) {
     str = std::to_string(GetAsReal());
   } else if (IsChar()) {
-    str = std::to_string(GetAsChar());
+    str = GetAsChar();
   } else if (IsString()) {
     str = GetAsString();
   } else {
@@ -48,11 +48,9 @@ std::string Data::ToString() const {
   return str;
 }
 
-/* TODO this breaks program for some reason
 Data::~Data() {
-  //if (type == Type::String) delete str;
+  if (type == Type::String) delete str;
 }
-*/
 
 double Data::GetAsNumeric() const { return value.d; }
 long Data::GetAsReal() const { return value.l; }

@@ -16,6 +16,8 @@ void OperationFactory::Init() {
     operations["JMP"] = new JmpOperation();
     operations["ASSIGN"] = new AssignOperation();
     operations["OUT"] = new OutOperation();
+    operations["JMPZ"] = new JmpzOperation();
+    operations["JMPNZ"] = new JmpnzOperation();
   }
 }
 

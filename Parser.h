@@ -13,6 +13,24 @@
 
 class Parser {
   protected:
+    Token StrToLabelTok(Cache *cache, const std::string &label_name) {
+      if (!str_is_label(label_name)) {
+        std::string str_err = "invalid label name for jump: " + label_name;
+        throw std::runtime_error(str_err);
+      }
+
+      Label *label;
+      if (cache->HasLabel(label_name)) {
+        label = cache->GetLabel(label_name);
+      } else {
+        label = new Label(label_name, -1);
+        cache->SetLabel(label);
+      }
+
+      Token t = Token(label);
+      return t;
+    }
+
     bool HasValidParamsCount(int params_count, int min, int max) {
       if (params_count < min || params_count > max) {
         std::string str_err = "wrong param count: expected " + std::to_string(min) + "-" + std::to_string(max) + ", got " + std::to_string(params_count);
@@ -154,6 +172,42 @@ class SleepParser : public Parser {
 
 };
 
+class JmpzParser : public Parser {
+  public:
+    JmpzParser() {}
+    virtual Parser *Clone() { return new JmpzParser(); }
+    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+      std::vector<Token> tokens;
+      std::vector<std::string> str_toks = split_line(str);
+      remove_opname(str_toks);
+
+      HasValidParamsCount(str_toks.size(), 2, 2);
+      Token t1 = StrToLabelTok(cache, str_toks[0]);
+      Token t2 = StrToNumTok(cache, str_toks[1]);
+      tokens.push_back(t1);
+      tokens.push_back(t2);
+      return tokens;
+    }
+};
+
+class JmpnzParser : public Parser {
+  public:
+    JmpnzParser() {}
+    virtual Parser *Clone() { return new JmpnzParser(); }
+    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+      std::vector<Token> tokens;
+      std::vector<std::string> str_toks = split_line(str);
+      remove_opname(str_toks);
+
+      HasValidParamsCount(str_toks.size(), 2, 2);
+      Token t1 = StrToLabelTok(cache, str_toks[0]);
+      Token t2 = StrToNumTok(cache, str_toks[1]);
+      tokens.push_back(t1);
+      tokens.push_back(t2);
+      return tokens;
+    }
+};
+
 class JmpParser : public Parser {
   public:
     JmpParser() {}
@@ -166,20 +220,7 @@ class JmpParser : public Parser {
       HasValidParamsCount(str_toks.size(), 1, 1);
 
       std::string label_name = str_toks.front();
-      if (!str_is_label(label_name)) {
-        std::string str_err = "invalid label name for jump: " + label_name;
-        throw std::runtime_error(str_err);
-      }
-
-      Label *label;
-      if (cache->HasLabel(label_name)) {
-        label = cache->GetLabel(label_name);
-      } else {
-        label = new Label(label_name, -1);
-        cache->SetLabel(label);
-      }
-
-      Token t = Token(label);
+      Token t = StrToLabelTok(cache, label_name);
       tokens.push_back(t);
       return tokens;
     }
@@ -369,9 +410,13 @@ class OutParser : public Parser {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
+      if (str_toks.front() == "OUT") remove_vector_front(str_toks);
+
       HasValidParamsCount(str_toks.size(), 1, 12);
       for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {
-        tokens.push_back(StrToTok(cache, *it));
+        Token t = StrToTok(cache, *it);
+        if (t.IsChar()) std::cout << t.ToString() << std::endl;
+        tokens.push_back(t);
       }
       return tokens;
     }

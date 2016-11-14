@@ -5,6 +5,7 @@
 #include <chrono>
 #include <thread>
 #include "Token.h"
+#include "Util.h"
 
 class Operation {
   protected:
@@ -53,6 +54,49 @@ class JmpOperation : public Operation {
       if (l->GetIndex() >= 0) {
         std::cout << "jmp: setting program counter to the targeted label " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
         prog_counter = l->GetIndex();
+      }
+    }
+};
+class JmpzOperation : public Operation {
+  public:
+    JmpzOperation() {}
+    virtual Operation *Clone() {
+      JmpzOperation *o = new JmpzOperation();
+      return o;
+    }
+    virtual void Execute(int &prog_counter) {
+      Label *l = params.front().GetLabel();
+      Token t2 = params[1];
+      bool do_jump = false;
+      if (t2.IsNumeric() && double_equals(t2.GetAsNumeric(), 0)) do_jump = true;
+      if (t2.IsReal() && t2.GetAsReal() == 0) do_jump = true;
+      if (l->GetIndex() >= 0 && do_jump == true) {
+        std::cout << "jmpz: setting program counter to the targeted label " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        prog_counter = l->GetIndex();
+      } else {
+        std::cout << "jmpz: not jumping because " << t2.ToString() << " is not zero" << std::endl;
+      }
+    }
+};
+
+class JmpnzOperation : public Operation {
+  public:
+    JmpnzOperation() {}
+    virtual Operation *Clone() {
+      JmpnzOperation *o = new JmpnzOperation();
+      return o;
+    }
+    virtual void Execute(int &prog_counter) {
+      Label *l = params.front().GetLabel();
+      Token t2 = params[1];
+      bool do_jump = false;
+      if (t2.IsNumeric() && !double_equals(t2.GetAsNumeric(), 0.0)) do_jump = true;
+      if (t2.IsReal() && t2.GetAsReal() != 0) do_jump = true;
+      if (l->GetIndex() >= 0 && do_jump == true) {
+        std::cout << "jmpnz: setting program counter to the targeted label " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        prog_counter = l->GetIndex();
+      } else {
+        std::cout << "jmpnz: not jumping because " << t2.ToString() << " is zero" << std::endl;
       }
     }
 };
