@@ -1,4 +1,0 @@
-VAR $string, STRING, 100, "hello world"
-VAR $movar, CHAR, 'c'
-VAR $mrvar, REAL, 52
-ASSIGN $string, "idk"

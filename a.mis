@@ -1,3 +1,0 @@
-VAR $var1, STRING, 10, "why"
-VAR $var2, CHAR, 'a'
-ADD $var1, $var1, $var2

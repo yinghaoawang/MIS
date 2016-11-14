@@ -35,7 +35,7 @@ class SleepOperation : public Operation {
       } else {
         seconds = token.GetAsNumeric();
       }
-      std::cout << "sleep ex: sleeping for " << seconds << " seconds" << std::endl;
+      std::cout << "sleep: sleeping for " << seconds << " seconds" << std::endl;
       long ms_to_sleep = seconds * 1000;
       std::this_thread::sleep_for(std::chrono::milliseconds(ms_to_sleep));
     }
@@ -51,8 +51,8 @@ class JmpOperation : public Operation {
     virtual void Execute(int &prog_counter) {
       Label *l = params.front().GetLabel();
       if (l->GetIndex() >= 0) {
+        std::cout << "jmp: setting program counter to the targeted label " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
         prog_counter = l->GetIndex();
-        std::cout << "setting program counter to the targeted label: " << l->GetName() << " to " << l->GetIndex() << std::endl;
       }
     }
 };
@@ -86,7 +86,7 @@ class AddOperation : public Operation {
     }
 
     virtual void Execute(int &prog_counter) {
-      // TODO refactor
+      std::cout << "add: ";
       double dsum = 0.0;
       long lsum = 0;
       Token dest_tok = params.front();
@@ -122,14 +122,11 @@ class AssignOperation : public Operation {
       return o;
     }
     virtual void Execute(int &prog_counter) {
-      std::cout << "assigning" << std::endl;
-      // TODO
-      Token &tok1 = params[0];
-      Token &tok2 = params[1];
-      std::cout << "tok1: " << tok1.GetVariable()->GetName() << " = " << tok1.GetAsString() << std::endl;
-      std::cout << "tok2: " << tok2.GetAsString() << std::endl;
+      std::cout << "assign: ";
+      Token &tok1 = params.at(0);
+      Token &tok2 = params.at(1);
+      std::cout << tok1.GetVariable()->GetName() << " = " << tok2.ToString() << std::endl;
       tok1.GetVariable()->SetData(*tok2.GetData());
-      std::cout << "tok1: " << tok1.GetVariable()->GetName() << " = " << tok1.GetAsString() << std::endl;
     }
 };
 
@@ -143,34 +140,43 @@ class SubOperation : public Operation {
     }
     virtual void Execute(int &prog_counter) {
       // TODO refactor
-      std::cout << "this is an sub operation" << std::endl;
+      std::cout << "sub: ";
       Token dest_tok = params.front();
 
       double ddiff = 0.0;
       long ldiff = 0;
 
-      if (params[1].IsNumeric()) {
-        ddiff += params[1].GetAsNumeric();
-        ldiff += params[1].GetAsNumeric();
+      Token tok1 = params[1];
+      Token tok2 = params[2];
+
+      if (tok1.IsNumeric()) {
+        ddiff = tok1.GetAsNumeric();
+        ldiff = tok1.GetAsNumeric();
       } else {
-        ddiff += params[1].GetAsReal();
-        ldiff += params[1].GetAsReal();
+        ddiff = tok1.GetAsReal();
+        ldiff = tok1.GetAsReal();
       }
 
-      if (params[2].IsNumeric()) {
-        ddiff -= params[2].GetAsNumeric();
-        ldiff -= params[2].GetAsNumeric();
+      if (tok2.IsNumeric()) {
+        ddiff -= tok2.GetAsNumeric();
+        ldiff -= tok2.GetAsNumeric();
       } else {
-        ddiff -= params[2].GetAsNumeric();
-        ldiff -= params[2].GetAsNumeric();
+        ddiff -= tok2.GetAsReal();
+        ldiff -= tok2.GetAsReal();
       }
+
+      std::cout << tok1.ToString() << " - " << tok2.ToString();
 
       Data data;
-      if (dest_tok.IsNumeric()) data = Data(ddiff);
-      if (dest_tok.IsReal()) data = Data(ldiff);
+      if (dest_tok.IsNumeric()) {
+        data = Data(ddiff);
+      }
+      if (dest_tok.IsReal()) {
+        data = Data(ldiff);
+      }
 
       dest_tok.SetVariableData(data);
-      std::cout << dest_tok.GetAsNumeric() << std::endl;
+      std::cout << " = " << dest_tok.ToString() << std::endl;
     }
 };
 

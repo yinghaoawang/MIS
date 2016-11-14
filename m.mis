@@ -1,4 +1,0 @@
-VAR $number, NUMERIC, 20.1
-VAR $str, NUMERIC, 0.0
-  ADD $str, 	1, 2, 3.2
-ADD 	$str, $str, 5.89

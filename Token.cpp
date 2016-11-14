@@ -24,7 +24,7 @@ Variable *Token::GetVariable() const {
 }
 
 bool Token::IsLabel() const {
-  return v != nullptr;
+  return l != nullptr;
 }
 
 bool Token::IsVariable() const {
@@ -46,29 +46,34 @@ Data::Type Token::GetType() const {
   return data->GetType();
 }
 
+std::string Token::ToString() const {
+  if (IsVariable()) return v->ToString();
+  return data->ToString();
+}
+
 long Token::GetAsReal() const {
-  if (v != nullptr) {
+  if (IsVariable()) {
     return (v->GetAsReal());
   }
   return data->GetAsReal();
 }
 
 double Token::GetAsNumeric() const {
-  if (v != nullptr) {
+  if (IsVariable()) {
     return (v->GetAsNumeric());
   }
   return data->GetAsNumeric();
 }
 
 char Token::GetAsChar() const {
-  if (v != nullptr) {
+  if (IsVariable()) {
     return (v->GetAsChar());
   }
   return data->GetAsChar();
 }
 
 char *Token::GetAsString() const {
-  if (v != nullptr) {
+  if (IsVariable()) {
     return (v->GetAsString());
   }
   return data->GetAsString();

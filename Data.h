@@ -35,6 +35,8 @@ class Data {
     Type GetType() const;
     Value GetValue() const;
 
+    std::string ToString() const;
+
     double GetAsNumeric() const;
     long GetAsReal() const;
     char GetAsChar() const;

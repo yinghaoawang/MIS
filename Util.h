@@ -1,10 +1,26 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
+#include <iostream>
 #include <algorithm>
 #include <vector>
 #include <cstring>
 #include <sstream>
+
+
+/*
+ * Function: remove_trailing_zeroes
+ * Description: removes zeroes at end of a string, keeps last zero
+ */
+static inline std::string &remove_trailing_zeroes(std::string &str) {
+  size_t index_cutoff = str.find_last_not_of('0');
+  if (index_cutoff == 1) {
+    ++index_cutoff;
+  }
+  ++index_cutoff;
+  str = str.erase(index_cutoff, std::string::npos);
+  return str;
+}
 
 /*
  * Function: cut_quotes
@@ -160,23 +176,73 @@ static inline std::istream &get_opname_line(std::istream &is, std::string &src_s
   return is;
 }
 
+static inline std::string &get_full_string_token(const std::string &str, size_t curr_i, size_t prev_i) {
+}
+
+/*
+ * Function: valid_string_token
+ * Description: checks for occurrence of a quote starting from first index to beginning second index
+ */
+static inline bool valid_string_token(const std::string &str, size_t curr_i, size_t prev_i) {
+  int quote_count = 0;
+  if (str[curr_i] != '\"') return false;
+  for (int i = curr_i - 1; i >= prev_i; --i) {
+    if (quote_count == 1) {
+      if (i != prev_i && !iswspace(str[i])) return false;
+    }
+
+    if (str[i] == '\"') ++quote_count;
+
+    if (quote_count > 1) return false;
+  }
+  if (quote_count != 1) return false;
+
+  for (int i = curr_i + 1; i < str.size(); ++i) {
+    if (quote_count == 1) {
+      if (i != prev_i && !iswspace(str[i])) return false;
+    }
+
+    if (str[i] == '\"') ++quote_count;
+
+    if (quote_count > 1) return false;
+  }
+  return true;
+}
+
 /*
  * Function: split_line
  * Description: splits string into tokens delimited by comma and \n, returns vector of the string tokens
  */
 static inline std::vector<std::string> split_line(const std::string &str) {
   std::vector<std::string> strings;
-  char *cstr = (char*)malloc(sizeof(char) * str.length() + 1);
+  char *cstr = new char[str.length() + 1];
   strcpy(cstr, str.c_str());
-  char delims[] = ",\n";
+  char *copy = strdup(cstr);
+
+  char delims[] = "\",\n";
+  int curr_i = 0;
   char* tok_p = strtok(cstr, delims);
   while (tok_p != NULL) {
     std::string token = std::string(tok_p);
     trim(token);
+
+    if (token.empty()) {
+      tok_p = strtok(NULL, delims);
+      continue;
+    }
+
+    int prev_i = curr_i;
+    curr_i = tok_p-cstr+strlen(tok_p);
+
+    if (valid_string_token(str, curr_i, prev_i)) {
+      token = "\"" + token + "\"";
+    }
+
     strings.push_back(token);
     tok_p = strtok(NULL, delims);
   }
-  free(cstr);
+  delete cstr;
+  free(copy);
   return strings;
 }
 
@@ -189,6 +255,7 @@ static inline std::string remove_opname(std::vector<std::string> &str_toks) {
   int index = first.find(" ");
   std::string opname = first.substr(0, index);
   first = first.substr(index + 1);
+  trim(first);
   return opname;
 }
 

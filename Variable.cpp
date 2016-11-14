@@ -19,6 +19,10 @@ void Variable::SetData(const Data &d) {
 Data *Variable::GetData() const { return data; }
 Data::Type Variable::GetType() const { return data->GetType(); }
 
+std::string Variable::ToString() const {
+  return data->ToString();
+}
+
 bool Variable::IsNumeric() const {
   return data->IsNumeric();
 }

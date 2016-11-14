@@ -1,4 +1,5 @@
 #include "Data.h"
+#include "Util.h"
 #include <cstdlib>
 
 Data::Data() {}
@@ -27,6 +28,24 @@ Data::Type Data::GetType() const {
 }
 Data::Value Data::GetValue() const {
   return value;
+}
+
+std::string Data::ToString() const {
+  std::string str;
+  if (IsNumeric()) {
+    str = std::to_string(GetAsNumeric());
+    remove_trailing_zeroes(str);
+  } else if (IsReal()) {
+    str = std::to_string(GetAsReal());
+  } else if (IsChar()) {
+    str = std::to_string(GetAsChar());
+  } else if (IsString()) {
+    str = GetAsString();
+  } else {
+    str = nullptr;
+  }
+
+  return str;
 }
 
 /* TODO this breaks program for some reason

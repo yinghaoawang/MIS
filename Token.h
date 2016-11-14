@@ -32,6 +32,8 @@ class Token : public IDataHandler{
     Data *GetData() const;
     Data::Type GetType() const;
 
+    std::string ToString() const;
+
     bool IsNumeric() const;
     bool IsReal() const;
     bool IsChar() const;
