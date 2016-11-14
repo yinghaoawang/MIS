@@ -27,10 +27,18 @@ void Cache::PushOperation(Operation * const op) {
 }
 void Cache::SetVariable(Variable * const v) {
   if (HasVariable(v)) {
-    std::string str_err = "variable already created: " + std::string(v->GetName());
+    std::string str_err = "cannot declare, variable already created: " + std::string(v->GetName());
     throw std::runtime_error(str_err);
   }
   variables[v->GetName()] = v;
+}
+void Cache::SetVariableData(const std::string &varname, const Data &data) {
+  if (!HasVariable(varname)) {
+    std::string str_err = "cannot set, variable not yet created: " + varname;
+    throw std::runtime_error(str_err);
+  }
+  Variable *v = GetVariable(varname);
+  v->SetData(data);
 }
 
 bool Cache::HasVariable(const std::string &str) const {

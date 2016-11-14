@@ -4,6 +4,7 @@ Token::Token(double d) { v = nullptr; l = nullptr; data = new Data(d); }
 Token::Token(long lo) { v = nullptr; l = nullptr; data = new Data(lo); }
 Token::Token(char c) { v = nullptr; l = nullptr; data = new Data(c); }
 Token::Token(const char * const s, int size) { v = nullptr; l = nullptr; data = new Data(s, size); }
+Token::Token(const char * const s) { v = nullptr; l = nullptr; data = new Data(s, strlen(s) + 1); }
 Token::Token(Variable * const v) {
   l = nullptr;
   this->v = v;
@@ -36,10 +37,12 @@ void Token::SetVariableData(const Data &d) {
 }
 
 Data *Token::GetData() const {
+  if (IsVariable()) return v->GetData();
   return data;
 };
 
 Data::Type Token::GetType() const {
+  if (IsVariable()) return v->GetType();
   return data->GetType();
 }
 

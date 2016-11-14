@@ -17,6 +17,7 @@ class Token : public IDataHandler{
     Token(long);
     Token(char);
     Token(const char*, int);
+    Token(const char*);
     Token(Variable* const);
     Token(Label* const);
 

@@ -53,29 +53,39 @@ static inline std::string &trim(std::string &s) {
 }
 
 /*
- * Function: str_is_char
- * Description: if string is formatted like 'c'
- */
-static inline bool str_is_char(const std::string &str) {
-  if (str.size() != 3) return false;
-  if (str[0] != '\'') return false;
-  if (str[2] != '\'') return false;
-  if (!isalnum(str[1])) return false;
-  return true;
-}
-
-/*
  * Function: str_is_label
  * Description: if string is formatted like lAbEl1
  */
 static inline bool str_is_label(const std::string &str) {
   if (str.size() < 1) return false;
   if (!isalpha(str[0])) return false;
-  for (int i = 0; i < str.size(); ++i) {
+  for (size_t i = 0; i < str.size(); ++i) {
     if (!isalnum(str[i])) return false;
   }
   return true;
 }
+
+/*
+ * Function: isstringchar
+ * Description: true if is a representable character like ' ' or '$'
+ */
+static inline bool isstringchar(char c) {
+  if (c >= 32 && c <= 176) return true; /* <! All ascii chars that can be viewed > */
+  return false;
+}
+
+/*
+ * Function: str_is_char
+ * Description: if string is formatted like 'c', ' ', or '$'
+ */
+static inline bool str_is_char(const std::string &str) {
+  if (str.size() != 3) return false;
+  if (str[0] != '\'') return false;
+  if (str[2] != '\'') return false;
+  if (!isstringchar(str[1])) return false;
+  return true;
+}
+
 
 /*
  * Function: str_is_string
@@ -84,8 +94,8 @@ static inline bool str_is_label(const std::string &str) {
 static inline bool str_is_string(const std::string &str) {
   if (str[0] != '\"') return false;
   if (str[str.size()-1] != '\"') return false;
-  for (int i = 1; i < str.size() - 1; ++i) {
-    if (!isalpha(str[i])) return false;
+  for (size_t i = 1; i < str.size() - 1; ++i) {
+    if (!isstringchar(str[i])) return false;
   }
   return true;
 }
@@ -95,7 +105,7 @@ static inline bool str_is_string(const std::string &str) {
  * Description: if string is formatted like 54
  */
 static inline bool str_is_real(const std::string &str) {
-  for (int i = 0; i < str.size(); ++i) {
+  for (size_t i = 0; i < str.size(); ++i) {
     if (!isdigit(str[i])) return false;
   }
   return true;
@@ -107,7 +117,7 @@ static inline bool str_is_real(const std::string &str) {
  */
 static inline bool str_is_numeric(const std::string &str) {
   int period_count = 0;
-  for (int i = 0 ; i < str.size(); ++i) {
+  for (size_t i = 0 ; i < str.size(); ++i) {
     if (str[i] == '.') {
       ++period_count;
     } else if (!isdigit(str[i])) {
@@ -126,7 +136,7 @@ static inline bool str_is_variable(const std::string &str) {
   if (str.size() < 2) return false;
   if (str[0] != '$') return false;
   if (!isalpha(str[1])) return false;
-  for (int i = 2; i < str.size(); ++i) {
+  for (size_t i = 2; i < str.size(); ++i) {
     if (!isalnum(str[i] )) return false;
   }
   return true;
@@ -152,19 +162,44 @@ static inline std::istream &get_opname_line(std::istream &is, std::string &src_s
 
 /*
  * Function: split_line
- * Description: splits string into tokens delimited by whitespace, returns vector of the string tokens
+ * Description: splits string into tokens delimited by comma and \n, returns vector of the string tokens
  */
 static inline std::vector<std::string> split_line(const std::string &str) {
   std::vector<std::string> strings;
   char *cstr = (char*)malloc(sizeof(char) * str.length() + 1);
   strcpy(cstr, str.c_str());
-  char delims[] = " ,\n\t\r\v\f";
+  char delims[] = ",\n";
   char* tok_p = strtok(cstr, delims);
   while (tok_p != NULL) {
-    strings.push_back(std::string(tok_p));
+    std::string token = std::string(tok_p);
+    trim(token);
+    strings.push_back(token);
     tok_p = strtok(NULL, delims);
   }
   free(cstr);
+  return strings;
+}
+
+/*
+ * Function: remove_opname
+ * Description: given a vector of strings, remove the the operation name from first token
+ */
+static inline std::string remove_opname(std::vector<std::string> &str_toks) {
+  std::string &first = str_toks.front();
+  int index = first.find(" ");
+  std::string opname = first.substr(0, index);
+  first = first.substr(index + 1);
+  return opname;
+}
+
+/*
+ * Function: split_line_getopname
+ * Description: splits the string into string tokens, and cuts and stores the operation name
+ */
+static inline std::vector<std::string> split_line_getopname(const std::string &str, std::string &opname) {
+  std::vector<std::string> strings = split_line(str);
+  if (strings.empty()) return strings;
+  opname = remove_opname(strings); 
   return strings;
 }
 

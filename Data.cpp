@@ -9,15 +9,17 @@ Data::Data(Data const &data) {
 Data::Data(double d) { type = Type::Numeric; value.d = d; }
 Data::Data(long l) { type = Type::Real; value.l = l; }
 Data::Data(char c) { type = Type::Char; value.c = c; }
-Data::Data(char *s, int size) {
+Data::Data(char *src_str, size_t size) {
   type = Type::String;
-  value.s = str;
   str = new char[size + 1];
-  strcpy(str, s);
+  strcpy(str, src_str);
+  value.s = str;
 }
-Data::Data(const std::string &str, int size) {
-  char *s = new char[size + 1];
-  value.s = this->str;
+Data::Data(const std::string &src_str, size_t size) {
+  type = Type::String;
+  str = new char[size + 1];
+  strcpy(str, src_str.c_str());
+  value.s = str;
 }
 
 Data::Type Data::GetType() const {
@@ -27,9 +29,11 @@ Data::Value Data::GetValue() const {
   return value;
 }
 
+/* TODO this breaks program for some reason
 Data::~Data() {
-  if (type == Type::String) delete str;
+  //if (type == Type::String) delete str;
 }
+*/
 
 double Data::GetAsNumeric() const { return value.d; }
 long Data::GetAsReal() const { return value.l; }

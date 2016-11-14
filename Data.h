@@ -3,9 +3,8 @@
 
 #include <string>
 #include <cstring>
-#include "IDataHandler.h"
 
-class Data : public IDataHandler {
+class Data {
   public:
     enum class Type {
       Numeric, Real, Char, String
@@ -29,9 +28,9 @@ class Data : public IDataHandler {
     Data(double);
     Data(long);
     Data(char);
-    Data(char*, int);
-    Data(const std::string&, int);
-    ~Data();
+    Data(char*, size_t);
+    Data(const std::string&, size_t);
+    //~Data();
 
     Type GetType() const;
     Value GetValue() const;

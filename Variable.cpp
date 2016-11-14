@@ -3,7 +3,7 @@
 Variable::Variable(const std::string &str_name, const Data &d) {
   name = new char[str_name.size() + 1];
   strcpy(name, str_name.c_str());
-  Init(d);
+  data = new Data(d);
 }
 Variable::~Variable() {
   delete data;
@@ -12,14 +12,12 @@ Variable::~Variable() {
 char *Variable::GetName() const {
   return name;
 }
-void Variable::Init(const Data &d) {
-  data = new Data(d);
-}
 void Variable::SetData(const Data &d) {
   delete data;
-  Init(d);
+  data = new Data(d);
 }
 Data *Variable::GetData() const { return data; }
+Data::Type Variable::GetType() const { return data->GetType(); }
 
 bool Variable::IsNumeric() const {
   return data->IsNumeric();

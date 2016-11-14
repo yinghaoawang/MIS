@@ -21,6 +21,41 @@ class Parser {
       return true;
     }
 
+    Token StrToTok(Cache *cache, std::string &str) {
+      if (str_is_variable(str)) {
+        std::string varname = str.substr(1);
+        if (!cache->HasVariable(varname)) {
+          std::string str_err = "variable does not exist: " + varname;
+          throw std::runtime_error(str_err);
+        }
+
+        Variable *v = cache->GetVariable(varname);
+        return Token(v);
+      }
+
+      if (str_is_numeric(str)) {
+        double d = std::stod(str);
+        return Token(d);
+      }
+
+      if (str_is_real(str)) {
+        long l = std::stol(str);
+        return Token(l);
+      }
+
+      if (str_is_char(str)) {
+        char c = str[1];
+        return Token(c);
+      }
+
+      if (str_is_string(str)) {
+        return Token(cut_quotes(str).c_str());
+      }
+
+      std::string str_err = "invalid param type: " + str;
+      throw std::runtime_error(str_err);
+    }
+
     Token StrToNumTok(Cache *cache, std::string &str) {
       if (str_is_variable(str)) {
         std::string varname = str.substr(1);
@@ -48,7 +83,7 @@ class Parser {
         return Token(l);
       }
 
-      std::string str_err = "bad param type for add operation: " + str;
+      std::string str_err = "not a number: " + str;
       throw std::runtime_error(str_err);
     }
 
@@ -86,8 +121,7 @@ class AddParser : public Parser {
     virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
-
-      remove_vector_front(str_toks);
+      remove_opname(str_toks);
 
       HasValidParamsCount(str_toks.size(), 3, 13);
 
@@ -109,8 +143,8 @@ class SleepParser : public Parser {
     virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
+      remove_opname(str_toks);
 
-      remove_vector_front(str_toks);
       HasValidParamsCount(str_toks.size(), 1, 1);
 
       Token t = StrToNumTok(cache, str_toks.front());
@@ -127,8 +161,8 @@ class JmpParser : public Parser {
     virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
+      remove_opname(str_toks);
 
-      remove_vector_front(str_toks);
       HasValidParamsCount(str_toks.size(), 1, 1);
 
       std::string label_name = str_toks.front();
@@ -161,8 +195,8 @@ class LabelParser : public Parser {
     virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
+      remove_opname(str_toks);
 
-      remove_vector_front(str_toks);
       HasValidParamsCount(str_toks.size(), 1, 1);
 
       std::string label_name = str_toks.front();
@@ -190,6 +224,38 @@ class LabelParser : public Parser {
       Token t = Token(label);
       tokens.push_back(t);
 
+      return tokens;
+    }
+};
+
+class AssignParser : public Parser {
+  public:
+    AssignParser() {}
+    Parser *Clone() { return new AssignParser(); }
+
+    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+      std::vector<Token> tokens;
+      std::vector<std::string> str_toks = split_line(str);
+      remove_opname(str_toks);
+
+      HasValidParamsCount(str_toks.size(), 2,2);
+      std::string varname = str_toks.at(0);
+      Variable *v = cache->GetVariable(varname.substr(1));
+      if (v == nullptr) {
+        std::string str_err = "variable not found: " + varname;
+        throw std::runtime_error(str_err);
+      }
+      Token tok1 = Token(v);
+      Token tok2 = StrToTok(cache, str_toks.at(1));
+
+      if (tok1.GetType() != tok2.GetType()) {
+        std::string str_err = "non matching get type for assignment";
+        throw std::runtime_error(str_err);
+      }
+
+
+      tokens.push_back(tok1);
+      tokens.push_back(tok2);
       return tokens;
     }
 };
@@ -224,7 +290,7 @@ class VarParser : public Parser {
         long l = stol(var_data);
         data = Data(l);
       } else if (var_type == "CHAR") {
-        char c = var_data[0];
+        char c = var_data.at(0);
         data = Data(c);
       } else if (var_type == "STRING") {
         data = Data(var_data, var_strlen);
@@ -233,14 +299,11 @@ class VarParser : public Parser {
         throw std::runtime_error(str_err);
       }
       Variable *v = new Variable(var_name, data);
-      return Token(v);
+      Token t = Token(v);
+      return t;
     }
 
-    Token VarToTok(std::string &var_name, std::string &var_type, std::string &var_data) {
-      return VarToTok(var_name, var_type, var_data, 0);
-    }
-
-    bool HasValidStringSize(std::string &str, int size) {
+    bool HasValidStringSize(std::string &str, size_t size) {
       if (str.size() - 2 > size) {
         std::string str_err = "string size greater than specified size: " + std::to_string(str.size() - 2) + " > " + std::to_string(size);
         throw std::runtime_error(str_err);
@@ -277,9 +340,8 @@ class VarParser : public Parser {
     }
     virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
       std::vector<Token> tokens;
-      std::vector<std::string> str_toks = split_line(str);
-
-      remove_vector_front(str_toks);
+      std::string opname;
+      std::vector<std::string> str_toks = split_line_getopname(str, opname);
 
       std::string var_name;
       std::string var_type;
@@ -307,8 +369,7 @@ class SubParser : public Parser {
     virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
-
-      remove_vector_front(str_toks);
+      remove_opname(str_toks);
 
       HasValidParamsCount(str_toks.size(), 3, 3);
 

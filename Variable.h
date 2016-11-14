@@ -14,12 +14,11 @@ class Variable : public IDataHandler {
     Variable(const std::string&, const Data&);
     ~Variable();
 
-    void Init(const Data&);
-
     void SetData(const Data&);
 
     char *GetName() const;
     Data *GetData() const;
+    Data::Type GetType() const;
 
     bool IsNumeric() const;
     bool IsReal() const;

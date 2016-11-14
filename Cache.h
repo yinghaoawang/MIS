@@ -23,6 +23,7 @@ class Cache {
     bool HasVariable(const Variable* const) const;
     Variable *GetVariable(const std::string&) const;
     void SetVariable(Variable* const);
+    void SetVariableData(const std::string&, const Data&);
 
     int GetLabelSize() const;
     bool HasLabel(const std::string&) const;

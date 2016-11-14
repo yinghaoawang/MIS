@@ -114,11 +114,30 @@ class AddOperation : public Operation {
     }
 };
 
+class AssignOperation : public Operation {
+  public:
+    AssignOperation() {}
+    virtual Operation *Clone() {
+      Operation *o = new AssignOperation();
+      return o;
+    }
+    virtual void Execute(int &prog_counter) {
+      std::cout << "assigning" << std::endl;
+      // TODO
+      Token &tok1 = params[0];
+      Token &tok2 = params[1];
+      std::cout << "tok1: " << tok1.GetVariable()->GetName() << " = " << tok1.GetAsString() << std::endl;
+      std::cout << "tok2: " << tok2.GetAsString() << std::endl;
+      tok1.GetVariable()->SetData(*tok2.GetData());
+      std::cout << "tok1: " << tok1.GetVariable()->GetName() << " = " << tok1.GetAsString() << std::endl;
+    }
+};
+
 class SubOperation : public Operation {
   public:
     SubOperation() {}
 
-    virtual Operation* Clone() {
+    virtual Operation *Clone() {
       SubOperation *o = new SubOperation();
       return o;
     }

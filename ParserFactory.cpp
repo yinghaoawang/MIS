@@ -14,6 +14,7 @@ void ParserFactory::Init() {
     parsers["LABEL"] = new LabelParser();
     parsers["SLEEP"] = new SleepParser();
     parsers["JMP"] = new JmpParser();
+    parsers["ASSIGN"] = new AssignParser();
   }
 }
 
