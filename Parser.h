@@ -13,7 +13,7 @@
 
 class Parser {
   protected:
-    Token StrToLabelTok(Cache *cache, const std::string &label_name) {
+    Token StrToLabelTok(Cache * const cache, const std::string &label_name) {
       if (!str_is_label(label_name)) {
         std::string str_err = "invalid label name for jump: " + label_name;
         throw std::runtime_error(str_err);
@@ -39,7 +39,7 @@ class Parser {
       return true;
     }
 
-    Token StrToTok(Cache *cache, std::string &str) {
+    Token StrToTok(Cache * const cache, const std::string &str) {
       if (str_is_variable(str)) {
         std::string varname = str.substr(1);
         if (!cache->HasVariable(varname)) {
@@ -107,9 +107,9 @@ class Parser {
 
   public:
     virtual Parser *Clone()=0;
-    virtual std::vector<Token> Tokenize(Cache*, std::string&)=0;
+    virtual std::vector<Token> Tokenize(Cache * const, const std::string&)=0;
 
-    Operation *ParseOp(Cache *cache, std::string &line, std::string &op_name) {
+    Operation *ParseOp(Cache * const cache, const std::string &line, const std::string &op_name) {
       OperationFactory *operation_factory = new OperationFactory();
 
       std::vector<Token> tokens;
@@ -136,7 +136,7 @@ class AddParser : public Parser {
       return p;
     }
 
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
@@ -158,7 +158,7 @@ class SleepParser : public Parser {
       Parser *p = new SleepParser();
       return p;
     }
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
@@ -172,11 +172,11 @@ class SleepParser : public Parser {
 
 };
 
-class JmpzParser : public Parser {
+class JmpznzParser : public Parser {
   public:
-    JmpzParser() {}
-    virtual Parser *Clone() { return new JmpzParser(); }
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    JmpznzParser() {}
+    virtual Parser *Clone() { return new JmpznzParser(); }
+    virtual std::vector<Token> Tokenize(Cache * const cache, const  std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
@@ -190,20 +190,23 @@ class JmpzParser : public Parser {
     }
 };
 
-class JmpnzParser : public Parser {
+class JmpglteParser : public Parser {
   public:
-    JmpnzParser() {}
-    virtual Parser *Clone() { return new JmpnzParser(); }
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    JmpglteParser() {}
+    virtual Parser *Clone() { return new JmpglteParser(); }
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
 
-      HasValidParamsCount(str_toks.size(), 2, 2);
+      HasValidParamsCount(str_toks.size(), 3, 3);
+
       Token t1 = StrToLabelTok(cache, str_toks[0]);
       Token t2 = StrToNumTok(cache, str_toks[1]);
+      Token t3 = StrToNumTok(cache, str_toks[2]);
       tokens.push_back(t1);
       tokens.push_back(t2);
+      tokens.push_back(t3);
       return tokens;
     }
 };
@@ -212,7 +215,7 @@ class JmpParser : public Parser {
   public:
     JmpParser() {}
     virtual Parser *Clone() { return new JmpParser(); }
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
@@ -233,7 +236,7 @@ class LabelParser : public Parser {
       Parser *p = new LabelParser();
       return p;
     }
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
@@ -274,7 +277,7 @@ class AssignParser : public Parser {
     AssignParser() {}
     Parser *Clone() { return new AssignParser(); }
 
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
@@ -379,7 +382,7 @@ class VarParser : public Parser {
       Parser *p = new VarParser();
       return p;
     }
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::string opname;
       std::vector<std::string> str_toks = split_line_getopname(str, opname);
@@ -391,7 +394,7 @@ class VarParser : public Parser {
 
       SetVariable(str_toks, var_name, var_type, var_data, var_strlen);
       HasValidVarType(var_name, var_type, var_data);
-      if (var_type == "STRING" || var_type == "CHAR") cut_quotes(var_data);
+      if (var_type == "STRING" || var_type == "CHAR") var_data = cut_quotes(var_data);
 
       Token t = VarToTok(var_name, var_type, var_data, var_strlen);
       cache->SetVariable(t.GetVariable());
@@ -406,7 +409,7 @@ class OutParser : public Parser {
     virtual Parser *Clone() {
       return new OutParser();
     }
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
@@ -415,7 +418,6 @@ class OutParser : public Parser {
       HasValidParamsCount(str_toks.size(), 1, 12);
       for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {
         Token t = StrToTok(cache, *it);
-        if (t.IsChar()) std::cout << t.ToString() << std::endl;
         tokens.push_back(t);
       }
       return tokens;
@@ -429,7 +431,7 @@ class SubParser : public Parser {
       Parser *p = new SubParser();
       return p;
     }
-    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+    virtual std::vector<Token> Tokenize(Cache * const cache, const std::string &str) {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);

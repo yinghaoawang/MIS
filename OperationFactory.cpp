@@ -18,6 +18,10 @@ void OperationFactory::Init() {
     operations["OUT"] = new OutOperation();
     operations["JMPZ"] = new JmpzOperation();
     operations["JMPNZ"] = new JmpnzOperation();
+    operations["JMPGT"] = new JmpgtOperation();
+    operations["JMPGTE"] = new JmpgteOperation();
+    operations["JMPLT"] = new JmpltOperation();
+    operations["JMPLTE"] = new JmplteOperation();
   }
 }
 

@@ -42,6 +42,182 @@ class SleepOperation : public Operation {
     }
 };
 
+class JmpltOperation : public Operation {
+  public:
+    JmpltOperation() {}
+    virtual Operation *Clone() {
+      return  new JmpltOperation();
+    }
+    virtual void Execute(int &prog_counter) {
+      Label *l = params.front().GetLabel();
+      Token t2 = params[1];
+      Token t3 = params[2];
+      bool do_jump = false;
+      double d2;
+      double d3;
+      long l2;
+      long l3;
+      if (t2.IsNumeric()) {
+        d2 = t2.GetAsNumeric();
+        l2 = t2.GetAsNumeric();
+      } else {
+        d2 = t2.GetAsReal();
+        l2 = t2.GetAsReal();
+      }
+      if (t3.IsNumeric()) {
+        d3 = t3.GetAsNumeric();
+        l3 = t3.GetAsNumeric();
+      } else {
+        d3 = t3.GetAsReal();
+        l3 = t3.GetAsReal();
+      }
+
+      if (t2.IsNumeric() && t3.IsNumeric() && d2 < d3) do_jump = true;
+      else if (t2.IsNumeric() && t3.IsReal() && d2 < l3) do_jump = true;
+      else if (t2.IsReal() && t3.IsNumeric() && l2 < d3) do_jump = true;
+      else if (t2.IsReal() && t3.IsReal() && l2 < l3) do_jump = true;
+
+      if (l->GetIndex() >= 0 && do_jump == true) {
+        std::cout << "jmplt: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        prog_counter = l->GetIndex();
+      } else {
+        std::cout << "jmplt: not jumping " << t2.ToString() << "!<" << t3.ToString() << std::endl;
+      }
+    }
+};
+
+class JmplteOperation : public Operation {
+  public:
+    JmplteOperation() {}
+    virtual Operation *Clone() {
+      return  new JmplteOperation();
+    }
+    virtual void Execute(int &prog_counter) {
+      Label *l = params.front().GetLabel();
+      Token t2 = params[1];
+      Token t3 = params[2];
+      bool do_jump = false;
+      double d2;
+      double d3;
+      long l2;
+      long l3;
+      if (t2.IsNumeric()) {
+        d2 = t2.GetAsNumeric();
+        l2 = t2.GetAsNumeric();
+      } else {
+        d2 = t2.GetAsReal();
+        l2 = t2.GetAsReal();
+      }
+      if (t3.IsNumeric()) {
+        d3 = t3.GetAsNumeric();
+        l3 = t3.GetAsNumeric();
+      } else {
+        d3 = t3.GetAsReal();
+        l3 = t3.GetAsReal();
+      }
+
+      if (t2.IsNumeric() && t3.IsNumeric() && d2 <= d3) do_jump = true;
+      else if (t2.IsNumeric() && t3.IsReal() && d2 <= l3) do_jump = true;
+      else if (t2.IsReal() && t3.IsNumeric() && l2 <= d3) do_jump = true;
+      else if (t2.IsReal() && t3.IsReal() && l2 <= l3) do_jump = true;
+
+      if (l->GetIndex() >= 0 && do_jump == true) {
+        std::cout << "jmplte: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        prog_counter = l->GetIndex();
+      } else {
+        std::cout << "jmplte: not jumping " << t2.ToString() << "!<=" << t3.ToString() << std::endl;
+      }
+    }
+};
+
+class JmpgteOperation : public Operation {
+  public:
+    JmpgteOperation() {}
+    virtual Operation *Clone() {
+      return  new JmpgteOperation();
+    }
+    virtual void Execute(int &prog_counter) {
+      Label *l = params.front().GetLabel();
+      Token t2 = params[1];
+      Token t3 = params[2];
+      bool do_jump = false;
+      double d2;
+      double d3;
+      long l2;
+      long l3;
+      if (t2.IsNumeric()) {
+        d2 = t2.GetAsNumeric();
+        l2 = t2.GetAsNumeric();
+      } else {
+        d2 = t2.GetAsReal();
+        l2 = t2.GetAsReal();
+      }
+      if (t3.IsNumeric()) {
+        d3 = t3.GetAsNumeric();
+        l3 = t3.GetAsNumeric();
+      } else {
+        d3 = t3.GetAsReal();
+        l3 = t3.GetAsReal();
+      }
+
+      if (t2.IsNumeric() && t3.IsNumeric() && d2 >= d3) do_jump = true;
+      else if (t2.IsNumeric() && t3.IsReal() && d2 >= l3) do_jump = true;
+      else if (t2.IsReal() && t3.IsNumeric() && l2 >= d3) do_jump = true;
+      else if (t2.IsReal() && t3.IsReal() && l2 >= l3) do_jump = true;
+
+      if (l->GetIndex() >= 0 && do_jump == true) {
+        std::cout << "jmpgte: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        prog_counter = l->GetIndex();
+      } else {
+        std::cout << "jmpgte: not jumping " << t2.ToString() << "!>=" << t3.ToString() << std::endl;
+      }
+    }
+};
+
+class JmpgtOperation : public Operation {
+  public:
+    JmpgtOperation() {}
+    virtual Operation *Clone() {
+      return  new JmpgtOperation();
+    }
+    virtual void Execute(int &prog_counter) {
+      Label *l = params.front().GetLabel();
+      Token t2 = params[1];
+      Token t3 = params[2];
+      bool do_jump = false;
+      double d2;
+      double d3;
+      long l2;
+      long l3;
+      if (t2.IsNumeric()) {
+        d2 = t2.GetAsNumeric();
+        l2 = t2.GetAsNumeric();
+      } else {
+        d2 = t2.GetAsReal();
+        l2 = t2.GetAsReal();
+      }
+      if (t3.IsNumeric()) {
+        d3 = t3.GetAsNumeric();
+        l3 = t3.GetAsNumeric();
+      } else {
+        d3 = t3.GetAsReal();
+        l3 = t3.GetAsReal();
+      }
+
+      if (t2.IsNumeric() && t3.IsNumeric() && d2 > d3) do_jump = true;
+      else if (t2.IsNumeric() && t3.IsReal() && d2 > l3) do_jump = true;
+      else if (t2.IsReal() && t3.IsNumeric() && l2 > d3) do_jump = true;
+      else if (t2.IsReal() && t3.IsReal() && l2 > l3) do_jump = true;
+
+      if (l->GetIndex() >= 0 && do_jump == true) {
+        std::cout << "jmpgt: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        prog_counter = l->GetIndex();
+      } else {
+        std::cout << "jmpgt: not jumping" << t2.ToString() << "!>" << t3.ToString() << std::endl;
+      }
+    }
+};
+
 class JmpOperation : public Operation {
   public:
     JmpOperation() {}
@@ -52,7 +228,7 @@ class JmpOperation : public Operation {
     virtual void Execute(int &prog_counter) {
       Label *l = params.front().GetLabel();
       if (l->GetIndex() >= 0) {
-        std::cout << "jmp: setting program counter to the targeted label " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        std::cout << "jmp: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
         prog_counter = l->GetIndex();
       }
     }
@@ -71,7 +247,7 @@ class JmpzOperation : public Operation {
       if (t2.IsNumeric() && double_equals(t2.GetAsNumeric(), 0)) do_jump = true;
       if (t2.IsReal() && t2.GetAsReal() == 0) do_jump = true;
       if (l->GetIndex() >= 0 && do_jump == true) {
-        std::cout << "jmpz: setting program counter to the targeted label " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        std::cout << "jmpz: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
         prog_counter = l->GetIndex();
       } else {
         std::cout << "jmpz: not jumping because " << t2.ToString() << " is not zero" << std::endl;
@@ -93,7 +269,7 @@ class JmpnzOperation : public Operation {
       if (t2.IsNumeric() && !double_equals(t2.GetAsNumeric(), 0.0)) do_jump = true;
       if (t2.IsReal() && t2.GetAsReal() != 0) do_jump = true;
       if (l->GetIndex() >= 0 && do_jump == true) {
-        std::cout << "jmpnz: setting program counter to the targeted label " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+        std::cout << "jmpnz: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
         prog_counter = l->GetIndex();
       } else {
         std::cout << "jmpnz: not jumping because " << t2.ToString() << " is zero" << std::endl;

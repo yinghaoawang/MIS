@@ -16,8 +16,12 @@ void ParserFactory::Init() {
     parsers["JMP"] = new JmpParser();
     parsers["ASSIGN"] = new AssignParser();
     parsers["OUT"] = new OutParser();
-    parsers["JMPZ"] = new JmpzParser();
-    parsers["JMPNZ"] = new JmpnzParser();
+    parsers["JMPZ"] = new JmpznzParser();
+    parsers["JMPNZ"] = new JmpznzParser();
+    parsers["JMPGT"] = new JmpglteParser();
+    parsers["JMPGTE"] = new JmpglteParser();
+    parsers["JMPLT"] = new JmpglteParser();
+    parsers["JMPLTE"] = new JmpglteParser();
   }
 }
 
