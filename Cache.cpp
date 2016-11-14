@@ -15,7 +15,7 @@ void Cache::SetLabel(Label * const l) {
     std::string str_err = "label already created: " + std::string(l->GetName());
     throw std::runtime_error(str_err);
   }
-  labels.at(l->GetName()) = l;
+  labels[l->GetName()] = l;
 }
 
 int Cache::GetOperationSize() const { return operations.size(); }

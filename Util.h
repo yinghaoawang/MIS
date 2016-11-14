@@ -30,8 +30,7 @@ static inline void remove_vector_front(std::vector<auto> &vec) {
  * Description: trims whitespace from front of string
  */
 static inline std::string &ltrim(std::string &s) {
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-        std::not1(std::ptr_fun<int, int>(std::isspace))));
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
   return s;
 }
 
@@ -86,11 +85,7 @@ static inline bool str_is_string(const std::string &str) {
   if (str[0] != '\"') return false;
   if (str[str.size()-1] != '\"') return false;
   for (int i = 1; i < str.size() - 1; ++i) {
-    if (i == 1) {
-      if (!isalpha(str[i])) return false;
-    } else {
-      if (!isalpha(str[i])) return false;
-    }
+    if (!isalpha(str[i])) return false;
   }
   return true;
 }

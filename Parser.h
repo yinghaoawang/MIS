@@ -31,6 +31,10 @@ class Parser {
         }
 
         Variable *v = cache->GetVariable(varname);
+        if (!v->IsNumber()) {
+          std::string str_err = "variable " + varname + " is not number";
+          throw std::runtime_error(str_err);
+        }
         return Token(v);
       }
 
@@ -78,7 +82,6 @@ class AddParser : public Parser {
       Parser *p = new AddParser();
       return p;
     }
-
 
     virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
       std::vector<Token> tokens;

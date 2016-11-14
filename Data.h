@@ -3,8 +3,9 @@
 
 #include <string>
 #include <cstring>
+#include "IDataHandler.h"
 
-class Data {
+class Data : public IDataHandler {
   public:
     enum class Type {
       Numeric, Real, Char, String
@@ -39,6 +40,13 @@ class Data {
     long GetAsReal() const;
     char GetAsChar() const;
     char *GetAsString() const;
+
+    bool IsNumeric() const;
+    bool IsReal() const;
+    bool IsChar() const;
+    bool IsString() const;
+    bool IsNumber() const;
+    bool IsCharSequence() const;
 };
 
 #endif

@@ -52,6 +52,7 @@ class VM {
       while (ifs.good()) {
         get_opname_line(ifs, op_name, line);
         if (trim(op_name).empty()) continue;
+        std::cout << line << std::endl;
         if (!parser_factory->HasParser(op_name)) {
           std::cerr << "unrecognized operation: " << op_name << std::endl;
           continue;

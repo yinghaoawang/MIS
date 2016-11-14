@@ -1,11 +1,12 @@
 #ifndef TOKEN_H_
 #define TOKEN_H_
 
+#include "IDataHandler.h"
 #include "Data.h"
 #include "Variable.h"
 #include "Label.h"
 
-class Token {
+class Token : public IDataHandler{
   private:
     Data *data;
     Variable *v;
@@ -19,12 +20,13 @@ class Token {
     Token(Variable* const);
     Token(Label* const);
 
-    Label *GetLabel() const;
     bool IsLabel() const;
+    bool IsVariable() const;
+
+    void SetVariableData(const Data&);
+    Label *GetLabel() const;
 
     Variable *GetVariable() const;
-    bool IsVariable() const;
-    void SetVariableData(const Data&);
 
     Data *GetData() const;
     Data::Type GetType() const;

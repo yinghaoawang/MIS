@@ -1,4 +1,6 @@
-VAR $myvar, NUMERIC, 1033.2
+VAR $myvar, STRING, 1, ""
+VAR $a, STRING, 2, "12"
+VAR $ab, STRING, 3, "1234"
 VAR $yourvar, REAL, 5
 ADD $myvar, $myvar, $yourvar
 ADD $myvar, $myvar, 1.0

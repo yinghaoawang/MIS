@@ -1,0 +1,5 @@
+VAR $myvar, REAL, 1
+LABEL l1b2
+ADD $myvar, $myvar, 1
+SLEEP 5
+JMP l1b2

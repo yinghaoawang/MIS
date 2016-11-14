@@ -43,49 +43,55 @@ Data::Type Token::GetType() const {
   return data->GetType();
 }
 
-bool Token::IsNumeric() const {
-  return GetType() == Data::Type::Numeric;
-}
-bool Token::IsReal() const {
-  return GetType() == Data::Type::Real;
-}
-bool Token::IsChar() const {
-  return GetType() == Data::Type::Char;
-}
-bool Token::IsString() const {
-  return GetType() == Data::Type::String;
-}
-bool Token::IsNumber() const {
-  return GetType() == Data::Type::Numeric || GetType() == Data::Type::Real;
-}
-bool Token::IsCharSequence() const {
-  return GetType() == Data::Type::Char || GetType() == Data::Type::String;
-}
-
 long Token::GetAsReal() const {
   if (v != nullptr) {
-    return (v->GetData())->GetAsReal();
+    return (v->GetAsReal());
   }
-  return (data)->GetAsReal();
+  return data->GetAsReal();
 }
 
 double Token::GetAsNumeric() const {
   if (v != nullptr) {
-    return (v->GetData())->GetAsNumeric();
+    return (v->GetAsNumeric());
   }
-  return (data)->GetAsNumeric();
+  return data->GetAsNumeric();
 }
 
 char Token::GetAsChar() const {
   if (v != nullptr) {
-    return (v->GetData())->GetAsChar();
+    return (v->GetAsChar());
   }
-  return (data)->GetAsChar();
+  return data->GetAsChar();
 }
 
 char *Token::GetAsString() const {
   if (v != nullptr) {
-    return (v->GetData())->GetAsString();
+    return (v->GetAsString());
   }
-  return (data)->GetAsString();
+  return data->GetAsString();
+}
+
+bool Token::IsNumeric() const {
+  if (IsVariable()) return v->IsNumeric();
+  return data->IsNumeric();
+}
+bool Token::IsReal() const {
+  if (IsVariable()) return v->IsReal();
+  return data->IsReal();
+}
+bool Token::IsChar() const {
+  if (IsVariable()) return v->IsChar();
+  return data->IsChar();
+}
+bool Token::IsString() const {
+  if (IsVariable()) return v->IsString();
+  return data->IsString();
+}
+bool Token::IsNumber() const {
+  if (IsVariable()) return v->IsNumber();
+  return data->IsNumber();
+}
+bool Token::IsCharSequence() const {
+  if (IsVariable()) return v->IsCharSequence();
+  return data->IsCharSequence();
 }

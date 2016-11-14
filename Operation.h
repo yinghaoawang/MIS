@@ -64,9 +64,7 @@ class LabelOperation : public Operation {
       LabelOperation *o = new LabelOperation();
       return o;
     }
-    virtual void Execute(int &prog_counter) {
-      std::cout << "this is a label operation: does nothing on execution" << std::endl;
-    }
+    virtual void Execute(int &prog_counter) {}
 };
 
 class VarOperation : public Operation {
@@ -75,9 +73,7 @@ class VarOperation : public Operation {
       VarOperation *o = new VarOperation();
       return o;
     }
-    virtual void Execute(int &prog_counter) {
-      std::cout << "this is a var operation: does nothing at execute" << std::endl;
-    }
+    virtual void Execute(int &prog_counter) {}
 };
 
 class AddOperation : public Operation {
@@ -91,28 +87,30 @@ class AddOperation : public Operation {
 
     virtual void Execute(int &prog_counter) {
       // TODO refactor
-      std::cout << "this is an add operation" << std::endl;
       double dsum = 0.0;
       long lsum = 0;
       Token dest_tok = params.front();
       for (auto it = params.begin(); it != params.end(); ++it) {
         if (it == params.begin()) continue;
+        if (it != params.begin() + 1) std::cout << "+ "; // DEBUG
         if (it->IsNumeric()) {
-        std::cout << "numeric: " << it->GetAsNumeric() << std::endl;
+          std::cout << it->GetAsNumeric() << " "; // DEBUG
           dsum += it->GetAsNumeric();
           lsum += it->GetAsNumeric();
-        }
-        if (it->IsReal()) {
-        std::cout << "real: " << it->GetAsReal() << std::endl;
+        } else if (it->IsReal()) {
+        std::cout << it->GetAsReal() << " "; // DEBUG
           dsum += it->GetAsReal();
           lsum += it->GetAsReal();
         }
       }
       Data data;
-      if (dest_tok.IsNumeric()) data = Data(dsum);
-      if (dest_tok.IsReal()) data = Data(lsum);
+      if (dest_tok.IsNumeric()) data = Data((double)dsum);
+      if (dest_tok.IsReal()) data = Data((long)lsum);
       dest_tok.SetVariableData(data);
-      std::cout << dest_tok.GetAsNumeric() << std::endl;
+
+      // DEBUG
+      if (dest_tok.IsNumeric()) std::cout << "= " << dest_tok.GetAsNumeric() << std::endl;
+      if (dest_tok.IsReal()) std::cout << "= " << dest_tok.GetAsReal() << std::endl;
     }
 };
 
