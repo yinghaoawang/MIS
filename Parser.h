@@ -359,6 +359,24 @@ class VarParser : public Parser {
     }
 };
 
+class OutParser : public Parser {
+  public:
+    OutParser() {}
+    virtual Parser *Clone() {
+      return new OutParser();
+    }
+    virtual std::vector<Token> Tokenize(Cache *cache, std::string &str) {
+      std::vector<Token> tokens;
+      std::vector<std::string> str_toks = split_line(str);
+      remove_opname(str_toks);
+      HasValidParamsCount(str_toks.size(), 1, 12);
+      for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {
+        tokens.push_back(StrToTok(cache, *it));
+      }
+      return tokens;
+    }
+};
+
 class SubParser : public Parser {
   public:
     SubParser() {}
@@ -370,13 +388,10 @@ class SubParser : public Parser {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
-
       HasValidParamsCount(str_toks.size(), 3, 3);
-
       for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {
         tokens.push_back(StrToNumTok(cache, *it));
       }
-
       return tokens;
     }
 };

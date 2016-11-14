@@ -1,5 +1,6 @@
 VAR $myvar, REAL, 1
 LABEL l1b2
 ADD $myvar, $myvar, 1
+OUT $myvar, 123, 1.2, "bitch", 'a', $myvar
 SLEEP 5
 JMP l1b2

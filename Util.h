@@ -82,10 +82,20 @@ static inline bool str_is_label(const std::string &str) {
 }
 
 /*
+ * Function: ischarchar
+ * Description: true if representable character like ' ' or '$'
+ */
+static inline bool ischarchar(char c) {
+  if (c >= 32 && c <= 176) return true; /* <! All ascii chars that can be viewed > */
+  return false;
+}
+
+/*
  * Function: isstringchar
  * Description: true if is a representable character like ' ' or '$'
  */
 static inline bool isstringchar(char c) {
+  if (c == '\"') return false;
   if (c >= 32 && c <= 176) return true; /* <! All ascii chars that can be viewed > */
   return false;
 }
@@ -98,7 +108,7 @@ static inline bool str_is_char(const std::string &str) {
   if (str.size() != 3) return false;
   if (str[0] != '\'') return false;
   if (str[2] != '\'') return false;
-  if (!isstringchar(str[1])) return false;
+  if (!ischarchar(str[1])) return false;
   return true;
 }
 
@@ -176,37 +186,21 @@ static inline std::istream &get_opname_line(std::istream &is, std::string &src_s
   return is;
 }
 
-static inline std::string &get_full_string_token(const std::string &str, size_t curr_i, size_t prev_i) {
-}
-
 /*
- * Function: valid_string_token
- * Description: checks for occurrence of a quote starting from first index to beginning second index
+ * Function: get_full_string_token
+ * Description: given a string, retrieves string bounded by first quote it encounters from prev index to the current index
  */
-static inline bool valid_string_token(const std::string &str, size_t curr_i, size_t prev_i) {
-  int quote_count = 0;
-  if (str[curr_i] != '\"') return false;
-  for (int i = curr_i - 1; i >= prev_i; --i) {
-    if (quote_count == 1) {
-      if (i != prev_i && !iswspace(str[i])) return false;
+static inline std::string get_full_string_token(const std::string &str, size_t curr_i, size_t prev_i) {
+  int true_prev_i = prev_i + 1;
+  for (int i = prev_i + 1; i < curr_i; ++i) {
+    if (str[i] == '\"') {
+      true_prev_i = i;
+      break;
     }
-
-    if (str[i] == '\"') ++quote_count;
-
-    if (quote_count > 1) return false;
   }
-  if (quote_count != 1) return false;
-
-  for (int i = curr_i + 1; i < str.size(); ++i) {
-    if (quote_count == 1) {
-      if (i != prev_i && !iswspace(str[i])) return false;
-    }
-
-    if (str[i] == '\"') ++quote_count;
-
-    if (quote_count > 1) return false;
-  }
-  return true;
+  std::string result = str.substr(true_prev_i, curr_i - true_prev_i + 1);
+  trim(result);
+  return result;
 }
 
 /*
@@ -234,10 +228,9 @@ static inline std::vector<std::string> split_line(const std::string &str) {
     int prev_i = curr_i;
     curr_i = tok_p-cstr+strlen(tok_p);
 
-    if (valid_string_token(str, curr_i, prev_i)) {
-      token = "\"" + token + "\"";
+    if (str[curr_i] == '\"') {
+      token = get_full_string_token(str, curr_i, prev_i);
     }
-
     strings.push_back(token);
     tok_p = strtok(NULL, delims);
   }

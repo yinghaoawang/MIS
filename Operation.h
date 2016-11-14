@@ -12,7 +12,7 @@ class Operation {
   public:
     virtual Operation* Clone()=0;
     virtual void Execute(int&)=0;
-    virtual void SetParams(std::vector<Token> &param_tok) {
+    virtual void SetParams(std::vector<Token> &param_tok) final {
       for (auto it = param_tok.begin(); it != param_tok.end(); ++it) {
         params.push_back(*it);
       }
@@ -35,7 +35,7 @@ class SleepOperation : public Operation {
       } else {
         seconds = token.GetAsNumeric();
       }
-      std::cout << "sleep: sleeping for " << seconds << " seconds" << std::endl;
+      std::cout << "sleep: " << seconds << " seconds" << std::endl;
       long ms_to_sleep = seconds * 1000;
       std::this_thread::sleep_for(std::chrono::milliseconds(ms_to_sleep));
     }
@@ -130,6 +130,22 @@ class AssignOperation : public Operation {
     }
 };
 
+class OutOperation : public Operation {
+  public:
+    OutOperation() {}
+    virtual Operation *Clone() {
+      return new OutOperation();
+    }
+    virtual void Execute(int &prog_counter) {
+      // TODO write to file
+      std::cout << "out: ";
+      for (auto it = params.begin(); it != params.end(); ++it) {
+        std::cout << it->ToString() << " ";
+      }
+      std::cout << std::endl;
+    }
+};
+
 class SubOperation : public Operation {
   public:
     SubOperation() {}
@@ -139,7 +155,6 @@ class SubOperation : public Operation {
       return o;
     }
     virtual void Execute(int &prog_counter) {
-      // TODO refactor
       std::cout << "sub: ";
       Token dest_tok = params.front();
 

@@ -15,6 +15,7 @@ void OperationFactory::Init() {
     operations["SLEEP"] = new SleepOperation();
     operations["JMP"] = new JmpOperation();
     operations["ASSIGN"] = new AssignOperation();
+    operations["OUT"] = new OutOperation();
   }
 }
 
