@@ -143,6 +143,11 @@ class AddParser : public Parser {
 
       HasValidParamsCount(str_toks.size(), 3, 13);
 
+      if (!cache->HasVariable(str_toks.front().substr(1))) {
+        std::string str_err = "requires variable as first param, given: " + str_toks.front();
+        throw std::runtime_error(str_err);
+      }
+
       for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {
         tokens.push_back(StrToNumTok(cache, *it));
       }
@@ -436,6 +441,10 @@ class SubParser : public Parser {
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
       HasValidParamsCount(str_toks.size(), 3, 3);
+      if (!cache->HasVariable(str_toks.front().substr(1))) {
+        std::string str_err = "requires variable as first param, given: " + str_toks.front();
+        throw std::runtime_error(str_err);
+      }
       for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {
         tokens.push_back(StrToNumTok(cache, *it));
       }

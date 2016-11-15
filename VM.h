@@ -34,7 +34,13 @@ class VM {
       std::cout << "variables: " << cache->GetVariableSize() << std::endl;
 
       for (int prog_counter = 0; prog_counter < cache->GetOperationSize(); ++prog_counter) {
-        cache->GetOperation(prog_counter)->Execute(prog_counter);
+
+        try {
+          cache->GetOperation(prog_counter)->Execute(prog_counter);
+        } catch(std::exception &e) {
+          std::cout << "runtime error: " << e.what() << std::endl;
+        }
+
       }
     }
 
@@ -54,7 +60,7 @@ class VM {
         if (trim(op_name).empty()) continue;
         std::cout << line << std::endl;
         if (!parser_factory->HasParser(op_name)) {
-          std::cerr << "unrecognized operation: " << op_name << std::endl;
+          std::cerr << "compiletime error: unrecognized operation: " << op_name << std::endl;
           continue;
         }
         auto op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);
@@ -66,7 +72,7 @@ class VM {
       try {
         cache->CheckLabelValidity();
       } catch(std::exception &e) {
-         std::cerr << "error: " << e.what() << std::endl;
+         std::cerr << "compiletime error: " << e.what() << std::endl;
       }
       std::cout << std::endl;
       ifs.close();

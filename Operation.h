@@ -4,6 +4,7 @@
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <exception>
 #include "Token.h"
 #include "Util.h"
 
@@ -296,6 +297,52 @@ class VarOperation : public Operation {
     virtual void Execute(int &prog_counter) {}
 };
 
+class MulOperation : public Operation {
+  public:
+    MulOperation() {}
+
+    virtual Operation* Clone() {
+      MulOperation *o = new MulOperation();
+      return o;
+    }
+
+    virtual void Execute(int &prog_counter) {
+      std::cout << "mul: ";
+      double dsum = 0.0;
+      long lsum = 0;
+      Token dest_tok = params.front();
+      for (auto it = params.begin(); it != params.end(); ++it) {
+        if (it == params.begin()) continue;
+        if (it != params.begin() + 1) std::cout << "* "; // DEBUG
+        if (it->IsNumeric()) {
+          std::cout << it->GetAsNumeric() << " "; // DEBUG
+          dsum *= it->GetAsNumeric();
+          lsum *= it->GetAsNumeric();
+          if (it == params.begin() + 2) {
+            dsum = it->GetAsNumeric();
+            lsum = it->GetAsNumeric();
+          }
+        } else if (it->IsReal()) {
+        std::cout << it->GetAsReal() << " "; // DEBUG
+          dsum *= it->GetAsReal();
+          lsum *= it->GetAsReal();
+          if (it == params.begin() + 2) {
+            dsum = it->GetAsReal();
+            lsum = it->GetAsReal();
+          }
+        }
+      }
+      Data data;
+      if (dest_tok.IsNumeric()) data = Data((double)dsum);
+      if (dest_tok.IsReal()) data = Data((long)lsum);
+      dest_tok.SetVariableData(data);
+
+      // DEBUG
+      if (dest_tok.IsNumeric()) std::cout << "= " << dest_tok.GetAsNumeric() << std::endl;
+      if (dest_tok.IsReal()) std::cout << "= " << dest_tok.GetAsReal() << std::endl;
+    }
+};
+
 class AddOperation : public Operation {
   public:
     AddOperation() {}
@@ -363,6 +410,69 @@ class OutOperation : public Operation {
         std::cout << it->ToString() << " ";
       }
       std::cout << std::endl;
+    }
+};
+
+class DivOperation : public Operation {
+  public:
+    DivOperation() {}
+
+    virtual Operation *Clone() {
+      DivOperation *o = new DivOperation();
+      return o;
+    }
+    virtual void Execute(int &prog_counter) {
+      std::cout << "div: ";
+      Token dest_tok = params.front();
+
+      double ddiff = 0.0;
+      long ldiff = 0;
+      bool div_by_zero = false;
+
+      Token tok1 = params[1];
+      Token tok2 = params[2];
+
+      if (tok1.IsNumeric()) {
+        ddiff = tok1.GetAsNumeric();
+        ldiff = tok1.GetAsNumeric();
+      } else {
+        ddiff = tok1.GetAsReal();
+        ldiff = tok1.GetAsReal();
+      }
+
+      if (tok2.IsNumeric()) {
+        if (double_equals(tok2.GetAsNumeric(), 0)) {
+          div_by_zero = true;
+        } else {
+          ddiff /= tok2.GetAsNumeric();
+          ldiff /= tok2.GetAsNumeric();
+        }
+      } else {
+        if (tok2.GetAsReal() == 0) {
+          div_by_zero = true;
+        } else {
+          ddiff /= tok2.GetAsReal();
+          ldiff /= tok2.GetAsReal();
+        }
+      }
+
+      std::cout << tok1.ToString() << " / " << tok2.ToString();
+
+      if (div_by_zero) {
+        std::cout << std::endl;
+        std::string str_err = "cannot divide by zero";
+        throw std::runtime_error(str_err);
+      }
+      Data data;
+      if (dest_tok.IsNumeric()) {
+        data = Data(ddiff);
+      }
+      if (dest_tok.IsReal()) {
+        data = Data(ldiff);
+      }
+
+      dest_tok.SetVariableData(data);
+      std::cout << " = " << dest_tok.ToString() << std::endl;
     }
 };
 

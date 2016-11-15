@@ -22,6 +22,8 @@ void OperationFactory::Init() {
     operations["JMPGTE"] = new JmpgteOperation();
     operations["JMPLT"] = new JmpltOperation();
     operations["JMPLTE"] = new JmplteOperation();
+    operations["MUL"] = new MulOperation();
+    operations["DIV"] = new DivOperation();
   }
 }
 
