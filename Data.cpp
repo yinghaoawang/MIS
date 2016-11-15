@@ -50,7 +50,7 @@ std::string Data::ToString() const {
 
 Data::~Data() {
   // TODO why crash
-  //if (type == Type::String) delete str;
+  //if (type == Type::String) delete[] str;
 }
 
 double Data::GetAsNumeric() const { return value.d; }

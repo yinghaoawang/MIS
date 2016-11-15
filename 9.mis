@@ -1,0 +1,8 @@
+VAR $mychar, CHAR, 'c'
+VAR $mychar2, CHAR, 'd'
+VAR $mychar3, CHAR, 'e'
+OUT $mychar, $mychar2, $mychar3
+ASSIGN $mychar, ' '
+ASSIGN $mychar2, 'asdf '
+ASSIGN $mychar3, '\t'
+OUT $mychar, $mychar2, $mychar3

@@ -24,6 +24,8 @@ void OperationFactory::Init() {
     operations["JMPLTE"] = new JmplteOperation();
     operations["MUL"] = new MulOperation();
     operations["DIV"] = new DivOperation();
+    operations["GET_STR_CHAR"] = new GetStrCharOperation();
+    operations["SET_STR_cHAR"] = new SetStrCharOperation();
   }
 }
 

@@ -476,6 +476,32 @@ class DivOperation : public Operation {
     }
 };
 
+class GetStrCharOperation : public Operation {
+  public:
+    GetStrCharOperation() {}
+    virtual Operation *Clone() {
+      return new GetStrCharOperation();
+    }
+
+    virtual void Execute(int &prog_counter) {
+      // TODO
+    }
+
+};
+
+class SetStrCharOperation : public Operation {
+  public:
+    SetStrCharOperation() {}
+    virtual Operation *Clone() {
+      return new SetStrCharOperation();
+    }
+
+    virtual void Execute(int &prog_counter) {
+      // TODO
+    }
+
+};
+
 class SubOperation : public Operation {
   public:
     SubOperation() {}

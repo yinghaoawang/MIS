@@ -68,6 +68,7 @@ class VM {
           op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);
         } catch(std::exception &e) {
           std::cerr << "compiletime error: " <<  e.what() << std::endl;
+          continue;
         }
         if (op == nullptr) continue;
 

@@ -33,7 +33,7 @@ static inline std::string &remove_trailing_zeroes(std::string &str) {
  * Function: cut_quotes
  * Description: Removes first and last char from string
  */
-static inline std::string cut_quotes(std::string str) {
+static inline std::string cut_quotes(std::string &str) {
   str.pop_back();
   str.erase(str.begin());
   return str;
@@ -89,11 +89,30 @@ static inline bool str_is_label(const std::string &str) {
 }
 
 /*
+ * Function: stringtochar
+ * Description: determines if string like "\n", " " is a char
+ */
+static inline char stringtochar(const std::string &str) {
+  if (str.size() > 2 && str[0] != '\\') return 0;
+  if (str.size() == 2) {
+    char c = str[1];
+    // is space
+    if (c == 'n') return '\n';
+    if (c == 't') return '\t';
+    if (c == 'v') return '\v';
+    if (c == 'f') return '\f';
+    if (c == 'r') return '\r';
+  }
+  return str[0];
+}
+
+/*
  * Function: ischarchar
  * Description: true if representable character like ' ' or '$'
  */
 static inline bool ischarchar(char c) {
   if (c >= 32 && c <= 176) return true; /* <! All ascii chars that can be viewed > */
+  if (isspace(c)) return true;
   return false;
 }
 
@@ -103,8 +122,7 @@ static inline bool ischarchar(char c) {
  */
 static inline bool isstringchar(char c) {
   if (c == '\"') return false;
-  if (c >= 32 && c <= 176) return true; /* <! All ascii chars that can be viewed > */
-  return false;
+  return ischarchar(c);
 }
 
 /*
@@ -112,10 +130,13 @@ static inline bool isstringchar(char c) {
  * Description: if string is formatted like 'c', ' ', or '$'
  */
 static inline bool str_is_char(const std::string &str) {
-  if (str.size() != 3) return false;
+  if (str.size() > 4) return false;
+  if (str.size() > 2) 
   if (str[0] != '\'') return false;
-  if (str[2] != '\'') return false;
-  if (!ischarchar(str[1])) return false;
+  if (str[str.size()-1] != '\'') return false;
+  std::string tmp_str = str;
+  cut_quotes(tmp_str);
+  if (!ischarchar(stringtochar(tmp_str))) return false;
   return true;
 }
 
@@ -250,7 +271,6 @@ static std::vector<std::string> split_not_quote(const char *s) {
       case 'T': // non-quoted text
         if (*s == ',') {
           strings.push_back(c_str_to_string(start, s));
-          std::cout << '<' <<  c_str_to_string(start,s) << '>' << std::endl;
           state = ',';
         } else if (*s == '\"') {
           state = '\"'; // begin quote
@@ -266,7 +286,6 @@ static std::vector<std::string> split_not_quote(const char *s) {
   } // end while
   if (state != ' ') {
     strings.push_back(c_str_to_string(start, s));
-    std::cout << '<' <<  c_str_to_string(start,s) << '>' << std::endl;
   }
   return strings;
 }

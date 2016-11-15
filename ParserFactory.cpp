@@ -24,6 +24,8 @@ void ParserFactory::Init() {
     parsers["JMPLTE"] = new JmpglteParser();
     parsers["MUL"] = new AddParser();
     parsers["DIV"] = new SubParser();
+    parsers["GET_STR_CHAR"] = new StrCharParser();
+    parsers["SET_STR_CHAR"] = new StrCharParser();
   }
 }
 
