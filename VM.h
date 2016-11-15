@@ -63,7 +63,12 @@ class VM {
           std::cerr << "compiletime error: unrecognized operation: " << op_name << std::endl;
           continue;
         }
-        auto op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);
+        Operation *op;
+        try {
+          op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);
+        } catch(std::exception &e) {
+          std::cerr << "compiletime error: " <<  e.what() << std::endl;
+        }
         if (op == nullptr) continue;
 
         cache->PushOperation(op);

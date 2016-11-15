@@ -3,7 +3,7 @@
 #include <cstdlib>
 
 Data::Data() {}
-Data::Data(Data const &data) {
+Data::Data(const Data &data) {
   type = data.type;
   value = data.value;
 }
@@ -49,7 +49,8 @@ std::string Data::ToString() const {
 }
 
 Data::~Data() {
-  if (type == Type::String) delete str;
+  // TODO why crash
+  //if (type == Type::String) delete str;
 }
 
 double Data::GetAsNumeric() const { return value.d; }

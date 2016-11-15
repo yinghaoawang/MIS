@@ -1,4 +1,5 @@
 #include "Variable.h"
+#include <iostream>
 
 Variable::Variable(const std::string &str_name, const Data &d) {
   name = new char[str_name.size() + 1];
@@ -6,8 +7,8 @@ Variable::Variable(const std::string &str_name, const Data &d) {
   data = new Data(d);
 }
 Variable::~Variable() {
-  delete data;
-  delete name;
+  //delete data;
+  //delete name;
 }
 char *Variable::GetName() const {
   return name;

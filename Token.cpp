@@ -15,6 +15,9 @@ Token::Token(Label * const l) {
   this->l = l;
 }
 
+Token::~Token() {
+}
+
 Label *Token::GetLabel() const {
   return l;
 }

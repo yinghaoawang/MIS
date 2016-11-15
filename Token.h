@@ -21,6 +21,8 @@ class Token : public IDataHandler{
     Token(Variable* const);
     Token(Label* const);
 
+    ~Token();
+
     bool IsLabel() const;
     bool IsVariable() const;
 

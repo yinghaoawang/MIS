@@ -211,43 +211,72 @@ static inline std::string get_full_string_token(const std::string &str, size_t c
 }
 
 /*
+ * Function: c_str_to_string
+ * Description: similar to substring, given start and end of c str, returns as string
+ */
+static inline std::string c_str_to_string(const char *frm, const char *to) {
+  std::string str;
+  while (frm < to) {
+    str += *frm++;
+  }
+  return str;
+}
+
+/*
+ * Function: split_not_quote
+ * Description: returns string tokens as vector given a c string, delimited by commas, ws ignored, supports quotes
+ */
+static std::vector<std::string> split_not_quote(const char *s) {
+  std::vector<std::string> strings;
+  const char *start;
+  int state = ',';
+  while (*s) {
+    switch (state) {
+      case '\f':
+      case '\v':
+      case '\t':
+      case '\b':
+      case '\n':
+      case ',':
+      case ' ': // Consuming spaces
+        if (*s == '\"') {
+          start = s;
+          state = '\"';  // begin quote
+        } else if (*s != ' ') {
+          start = s;
+          state = 'T';
+        }
+        break;
+      case 'T': // non-quoted text
+        if (*s == ',') {
+          strings.push_back(c_str_to_string(start, s));
+          std::cout << '<' <<  c_str_to_string(start,s) << '>' << std::endl;
+          state = ',';
+        } else if (*s == '\"') {
+          state = '\"'; // begin quote
+        }
+        break;
+      case '\"': // Inside a quote
+        if (*s == '\"') {
+          state = 'T'; // end quote
+        }
+        break;
+    }
+    s++;
+  } // end while
+  if (state != ' ') {
+    strings.push_back(c_str_to_string(start, s));
+    std::cout << '<' <<  c_str_to_string(start,s) << '>' << std::endl;
+  }
+  return strings;
+}
+
+/*
  * Function: split_line
  * Description: splits string into tokens delimited by comma and \n, returns vector of the string tokens
  */
 static inline std::vector<std::string> split_line(const std::string &str) {
-  std::vector<std::string> strings;
-  char *cstr = new char[str.length() + 1];
-  strcpy(cstr, str.c_str());
-  char *copy = strdup(cstr);
-
-  char delims[] = "\",\n";
-  int curr_i = 0;
-  char* tok_p = strtok(cstr, delims);
-  while (tok_p != NULL) {
-    std::string token = std::string(tok_p);
-    trim(token);
-
-    if (token.empty()) {
-      tok_p = strtok(NULL, delims);
-      continue;
-    }
-
-    int prev_i = curr_i;
-    curr_i = tok_p-cstr+strlen(tok_p);
-
-    if (str[curr_i] == '\"' && prev_i != 0) {
-      token = get_full_string_token(str, curr_i, prev_i);
-      trim(token);
-    }
-    if (prev_i == 0 && str[curr_i] == '\"') {
-      curr_i--;
-    }
-    if (!token.empty()) strings.push_back(token);
-    tok_p = strtok(NULL, delims);
-  }
-  delete cstr;
-  free(copy);
-  return strings;
+  return split_not_quote(str.c_str());
 }
 
 /*

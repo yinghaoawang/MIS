@@ -24,7 +24,7 @@ class Data {
 
   public:
     Data();
-    Data(Data const&);
+    Data(const Data&);
     Data(double);
     Data(long);
     Data(char);

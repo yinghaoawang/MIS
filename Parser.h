@@ -114,12 +114,7 @@ class Parser {
 
       std::vector<Token> tokens;
 
-      try {
-        tokens = Tokenize(cache, line);
-      } catch (std::exception &e) {
-        std::cerr << "error: " << e.what() << std::endl;
-        return nullptr;
-      }
+      tokens = Tokenize(cache, line);
 
       auto operation = (operation_factory->GetOperation(op_name))->Clone();
 
@@ -310,8 +305,9 @@ class AssignParser : public Parser {
 };
 
 class VarParser : public Parser {
+  // TODO fix parser error for VAR $mystr1, STRING, 100, "0" and " "
   private:
-    bool HasValidVarType(std::string &var_name, std::string &var_type, std::string &var_data) {
+    bool HasValidVarType(const std::string &var_name, const std::string &var_type, const std::string &var_data) {
       if (var_type == "NUMERIC" && !str_is_numeric(var_data)) {
         std::string str_err = "not of type NUMERIC: " + var_data;
         throw std::runtime_error(str_err);
@@ -330,7 +326,7 @@ class VarParser : public Parser {
       }
       return true;
     }
-    Token VarToTok(std::string &var_name, std::string &var_type, std::string &var_data, int var_strlen) {
+    Token VarToTok(const std::string &var_name, const std::string &var_type, const std::string &var_data, int var_strlen) {
       Data data;
       if (var_type == "NUMERIC") {
         double d = std::stod(var_data);
@@ -418,7 +414,6 @@ class OutParser : public Parser {
       std::vector<Token> tokens;
       std::vector<std::string> str_toks = split_line(str);
       remove_opname(str_toks);
-      if (str_toks.front() == "OUT") remove_vector_front(str_toks);
 
       HasValidParamsCount(str_toks.size(), 1, 12);
       for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {

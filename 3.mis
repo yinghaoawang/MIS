@@ -1,8 +1,9 @@
+VAR $bstring, STRING, 100,    "hello, world"
 VAR $astring, STRING, 100,    ""hello world"
 VAR $astring, STRING, 100,    "  "hello world"
-VAR $dstring, STRING, 100,    hello world""
-VAR $dstring, STRING, 100,    hello world"abc"
-VAR $cstring, STRING, 100,    "hello world
+VAR $astring, STRING, 100,    hello world""
+VAR $astring, STRING, 100,    hello world"abc"
+VAR $astring, STRING, 100,    "hello world
 VAR $string, STRING, 100,    "hello world"
 VAR $movar, CHAR, 'c'
 VAR $mrvar, REAL, 52
