@@ -12,7 +12,7 @@ class IDataHandler {
   virtual bool IsCharSequence() const = 0;
 
   virtual Data *GetData() const = 0;
-  virtual Data::Type GetType() const = 0;
+  //virtual Data::Type GetType() const = 0;
 
   virtual std::string ToString() const = 0;
 

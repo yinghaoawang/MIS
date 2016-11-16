@@ -49,6 +49,9 @@ bool Cache::HasVariable(const Variable * const v) const {
   std::string str = v->GetName();
   return HasVariable(str);
 }
+bool Cache::HasVariable(const Token &t) const {
+  return HasVariable(t.GetVariable());
+}
 bool Cache::HasLabel(const std::string &str) const {
   if (labels.find(str) == labels.end()) return false;
   return true;

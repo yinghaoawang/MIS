@@ -33,7 +33,8 @@ class Data {
     ~Data();
 
     Type GetType() const;
-    Value GetValue() const;
+    //Value GetValue() const;
+    auto GetValue() const;
 
     std::string ToString() const;
 

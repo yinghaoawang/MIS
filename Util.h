@@ -31,11 +31,15 @@ static inline std::string &remove_trailing_zeroes(std::string &str) {
 
 /*
  * Function: cut_quotes
- * Description: Removes first and last char from string
+ * Description: Removes first and last char from string if is a quote
  */
 static inline std::string cut_quotes(std::string &str) {
-  str.pop_back();
-  str.erase(str.begin());
+  char front = str.front();
+  char back = str.at(str.size()-1);
+  if (back == '\'' || back == '\"')
+    str.pop_back();
+  if (front == '\'' || front == '\"')
+    str.erase(str.begin());
   return str;
 }
 

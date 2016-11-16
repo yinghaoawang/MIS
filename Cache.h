@@ -19,6 +19,7 @@ class Cache {
     int GetOperationSize() const;
 
     int GetVariableSize() const;
+    bool HasVariable(const Token&) const;
     bool HasVariable(const std::string&) const;
     bool HasVariable(const Variable* const) const;
     Variable *GetVariable(const std::string&) const;

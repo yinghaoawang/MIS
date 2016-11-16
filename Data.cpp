@@ -26,9 +26,6 @@ Data::Data(const std::string &src_str, size_t size) {
 Data::Type Data::GetType() const {
   return type;
 }
-Data::Value Data::GetValue() const {
-  return value;
-}
 
 std::string Data::ToString() const {
   std::string str;

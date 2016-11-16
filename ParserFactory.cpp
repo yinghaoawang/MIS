@@ -1,4 +1,15 @@
 #include "ParserFactory.h"
+#include "AddParser.h"
+#include "SubParser.h"
+#include "VarParser.h"
+#include "LabelParser.h"
+#include "SleepParser.h"
+#include "JmpParser.h"
+#include "AssignParser.h"
+#include "OutParser.h"
+#include "JmpznzParser.h"
+#include "JmpglteParser.h"
+#include "StrCharParser.h"
 
 std::map<std::string, Parser*> ParserFactory::parsers;
 bool ParserFactory::initialized;
