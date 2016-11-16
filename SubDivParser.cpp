@@ -1,10 +1,10 @@
-#include "SubParser.h"
-SubParser::SubParser() {}
-Parser *SubParser::Clone() {
-  Parser *p = new SubParser();
+#include "SubDivParser.h"
+SubDivParser::SubDivParser() {}
+Parser *SubDivParser::Clone() {
+  Parser *p = new SubDivParser();
   return p;
 }
-std::vector<Token> SubParser::Tokenize(Cache * const cache, const std::string &str) {
+std::vector<Token> SubDivParser::Tokenize(Cache * const cache, const std::string &str) {
   std::vector<Token> tokens;
   std::vector<std::string> str_toks = split_line(str);
   remove_opname(str_toks);

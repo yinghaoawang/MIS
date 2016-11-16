@@ -1,11 +1,11 @@
-#ifndef ADDPARSER_H_
-#define ADDPARSER_H_
+#ifndef ADDMULPARSER_H_
+#define ADDMULPARSER_H_
 
 #include "Parser.h"
 
-class AddParser : public Parser {
+class AddMulParser : public Parser {
   public:
-    AddParser();
+    AddMulParser();
     virtual Parser *Clone();
     virtual std::vector<Token> Tokenize(Cache * const, const std::string&);
 };

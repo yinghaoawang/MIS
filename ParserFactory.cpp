@@ -1,6 +1,6 @@
 #include "ParserFactory.h"
-#include "AddParser.h"
-#include "SubParser.h"
+#include "AddMulParser.h"
+#include "SubDivParser.h"
 #include "VarParser.h"
 #include "LabelParser.h"
 #include "SleepParser.h"
@@ -19,8 +19,8 @@ ParserFactory::ParserFactory() { Init(); }
 void ParserFactory::Init() {
   if (!initialized) {
     initialized = true;
-    parsers["ADD"] = new AddParser();
-    parsers["SUB"] = new SubParser();
+    parsers["ADD"] = new AddMulParser();
+    parsers["SUB"] = new SubDivParser();
     parsers["VAR"] = new VarParser();
     parsers["LABEL"] = new LabelParser();
     parsers["SLEEP"] = new SleepParser();
@@ -33,8 +33,8 @@ void ParserFactory::Init() {
     parsers["JMPGTE"] = new JmpglteParser();
     parsers["JMPLT"] = new JmpglteParser();
     parsers["JMPLTE"] = new JmpglteParser();
-    parsers["MUL"] = new AddParser();
-    parsers["DIV"] = new SubParser();
+    parsers["MUL"] = new AddMulParser();
+    parsers["DIV"] = new SubDivParser();
     parsers["GET_STR_CHAR"] = new StrCharParser();
     parsers["SET_STR_CHAR"] = new StrCharParser();
   }
