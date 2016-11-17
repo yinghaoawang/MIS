@@ -20,6 +20,7 @@ std::vector<Token> AddMulParser::Tokenize(Cache * const cache, const std::string
   }
   if (!cache->HasVariable(t)) {
     std::string str_err = "variable " + std::string(t.GetVariable()->GetName()) + " does not exist";
+    throw std::runtime_error(str_err);
   }
 
   for (auto it = str_toks.begin(); it != str_toks.end(); ++it) {

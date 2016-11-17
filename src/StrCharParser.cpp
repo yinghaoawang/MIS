@@ -1,4 +1,5 @@
 #include "StrCharParser.h"
+#include <cstring>
 StrCharParser::StrCharParser() {}
 Parser *StrCharParser::Clone() {
   return new StrCharParser();
@@ -18,6 +19,14 @@ std::vector<Token> StrCharParser::Tokenize(Cache * const cache, const std::strin
       !t3.IsVariable() ||
       !t3.IsChar()) {
     std::string str_err = "invalid type for str char operation";
+    throw std::runtime_error(str_err);
+  }
+  if (!cache->HasVariable(t1)) {
+    std::string str_err = "variable " + std::string(t1.GetVariable()->GetName()) + " does not exist";
+    throw std::runtime_error(str_err);
+  }
+  if (strlen(cache->GetVariable(t1.GetVariable()->GetName())->GetAsString()) < t2.GetAsReal()) {
+    std::string str_err = "variable index out of bounds";
     throw std::runtime_error(str_err);
   }
   tokens.push_back(t1);
