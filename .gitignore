@@ -1,6 +1,7 @@
 .*.swp
 *.o
 main
+bin/*
 m
 mis
 misvm
