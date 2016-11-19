@@ -1,4 +1,22 @@
 #include "OperationFactory.h"
+#include "AddOperation.h"
+#include "SubOperation.h"
+#include "VarOperation.h"
+#include "LabelOperation.h"
+#include "SleepOperation.h"
+#include "JmpOperation.h"
+#include "AssignOperation.h"
+#include "OutOperation.h"
+#include "JmpzOperation.h"
+#include "JmpnzOperation.h"
+#include "JmpgtOperation.h"
+#include "JmpgteOperation.h"
+#include "JmpltOperation.h"
+#include "JmplteOperation.h"
+#include "MulOperation.h"
+#include "DivOperation.h"
+#include "GetStrCharOperation.h"
+#include "SetStrCharOperation.h"
 
 std::map<std::string, Operation*> OperationFactory::operations;
 bool OperationFactory::initialized;
@@ -25,7 +43,7 @@ void OperationFactory::Init() {
     operations["MUL"] = new MulOperation();
     operations["DIV"] = new DivOperation();
     operations["GET_STR_CHAR"] = new GetStrCharOperation();
-    operations["SET_STR_cHAR"] = new SetStrCharOperation();
+    operations["SET_STR_CHAR"] = new SetStrCharOperation();
   }
 }
 

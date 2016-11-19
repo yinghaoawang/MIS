@@ -1,9 +1,10 @@
 #include "Token.h"
+#include <iostream>
 
 Token::Token(double d) { v = nullptr; l = nullptr; data = new Data(d); }
 Token::Token(long lo) { v = nullptr; l = nullptr; data = new Data(lo); }
 Token::Token(char c) { v = nullptr; l = nullptr; data = new Data(c); }
-Token::Token(const char * const s, int size) { v = nullptr; l = nullptr; data = new Data(s, size); }
+Token::Token(const char * const s, size_t size) { v = nullptr; l = nullptr; data = new Data(s, size); }
 Token::Token(const char * const s) { v = nullptr; l = nullptr; data = new Data(s, strlen(s) + 1); }
 Token::Token(Variable * const v) {
   l = nullptr;
@@ -52,6 +53,13 @@ Data::Type Token::GetType() const {
 std::string Token::ToString() const {
   if (IsVariable()) return v->ToString();
   return data->ToString();
+}
+
+size_t Token::GetStrMaxSize() const {
+  if (IsVariable()) {
+    return v->GetStrMaxSize();
+  }
+  return data->GetStrMaxSize();
 }
 
 long Token::GetAsReal() const {

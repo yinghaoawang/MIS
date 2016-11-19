@@ -21,6 +21,7 @@ class Variable : public IDataHandler {
     Data::Type GetType() const;
 
     std::string ToString() const;
+    size_t GetStrMaxSize() const;
 
     bool IsNumeric() const;
     bool IsReal() const;

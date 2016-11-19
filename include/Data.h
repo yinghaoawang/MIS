@@ -19,6 +19,7 @@ class Data {
 
   private:
     char* str;
+    size_t str_max_size;
     Type type;
     Value value;
 
@@ -37,6 +38,7 @@ class Data {
     auto GetValue() const;
 
     std::string ToString() const;
+    size_t GetStrMaxSize() const;
 
     double GetAsNumeric() const;
     long GetAsReal() const;

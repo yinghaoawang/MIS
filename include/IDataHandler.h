@@ -15,6 +15,7 @@ class IDataHandler {
   //virtual Data::Type GetType() const = 0;
 
   virtual std::string ToString() const = 0;
+  virtual size_t GetStrMaxSize() const = 0;
 
   virtual long GetAsReal() const = 0;
   virtual double GetAsNumeric() const = 0;

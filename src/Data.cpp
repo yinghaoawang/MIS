@@ -6,6 +6,12 @@ Data::Data() {}
 Data::Data(const Data &data) {
   type = data.type;
   value = data.value;
+  if (data.type == Data::Type::String) {
+    str_max_size = data.str_max_size;
+    str = new char[str_max_size + 1];
+    strcpy(str, data.str);
+    value.s = str;
+  }
 }
 Data::Data(double d) { type = Type::Numeric; value.d = d; }
 Data::Data(long l) { type = Type::Real; value.l = l; }
@@ -13,12 +19,14 @@ Data::Data(char c) { type = Type::Char; value.c = c; }
 Data::Data(char *src_str, size_t size) {
   type = Type::String;
   str = new char[size + 1];
+  str_max_size = size;
   strcpy(str, src_str);
   value.s = str;
 }
 Data::Data(const std::string &src_str, size_t size) {
   type = Type::String;
   str = new char[size + 1];
+  str_max_size = size;
   strcpy(str, src_str.c_str());
   value.s = str;
 }
@@ -43,6 +51,11 @@ std::string Data::ToString() const {
   }
 
   return str;
+}
+
+size_t Data::GetStrMaxSize() const {
+  if (!IsString()) return 0;
+  return str_max_size;
 }
 
 Data::~Data() {

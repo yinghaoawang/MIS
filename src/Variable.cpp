@@ -23,6 +23,10 @@ Data::Type Variable::GetType() const { return data->GetType(); }
 std::string Variable::ToString() const {
   return data->ToString();
 }
+size_t Variable::GetStrMaxSize() const {
+  if (!IsString()) return 0;
+  return data->GetStrMaxSize();
+}
 
 bool Variable::IsNumeric() const {
   return data->IsNumeric();

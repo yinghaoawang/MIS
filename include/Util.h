@@ -42,6 +42,10 @@ static inline std::string cut_quotes(std::string &str) {
     str.erase(str.begin());
   return str;
 }
+static inline std::string cut_quotes(const std::string &str) {
+  std::string res_str = str;
+  return cut_quotes(res_str);
+}
 
 /*
  * Function: remove_vector_front

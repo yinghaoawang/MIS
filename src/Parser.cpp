@@ -49,7 +49,7 @@ Token Parser::StrToTok(Cache * const cache, const std::string &str) {
   }
 
   if (str_is_char(str)) {
-    char c = stringtochar(str);
+    char c = stringtochar(cut_quotes(str));
     return Token(c);
   }
 

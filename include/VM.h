@@ -59,7 +59,7 @@ class VM {
         get_opname_line(ifs, op_name, line);
         if (trim(op_name).empty()) continue;
         std::cout << line << std::endl;
-        if (!parser_factory->HasParser(op_name)) {
+        if (!parser_factory->HasParser(op_name) || !operation_factory->HasOperation(op_name)) {
           std::cerr << "compiletime error: unrecognized operation: " << op_name << std::endl;
           continue;
         }

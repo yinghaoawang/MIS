@@ -16,7 +16,7 @@ class Token : public IDataHandler{
     Token(double);
     Token(long);
     Token(char);
-    Token(const char*, int);
+    Token(const char*, size_t);
     Token(const char*);
     Token(Variable* const);
     Token(Label* const);
@@ -35,6 +35,7 @@ class Token : public IDataHandler{
     Data::Type GetType() const;
 
     std::string ToString() const;
+    size_t GetStrMaxSize() const;
 
     bool IsNumeric() const;
     bool IsReal() const;

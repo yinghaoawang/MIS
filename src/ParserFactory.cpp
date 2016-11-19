@@ -9,7 +9,8 @@
 #include "OutParser.h"
 #include "JmpznzParser.h"
 #include "JmpglteParser.h"
-#include "StrCharParser.h"
+#include "GetStrCharParser.h"
+#include "SetStrCharParser.h"
 
 std::map<std::string, Parser*> ParserFactory::parsers;
 bool ParserFactory::initialized;
@@ -35,8 +36,8 @@ void ParserFactory::Init() {
     parsers["JMPLTE"] = new JmpglteParser();
     parsers["MUL"] = new AddMulParser();
     parsers["DIV"] = new SubDivParser();
-    parsers["GET_STR_CHAR"] = new StrCharParser();
-    parsers["SET_STR_CHAR"] = new StrCharParser();
+    parsers["GET_STR_CHAR"] = new GetStrCharParser();
+    parsers["SET_STR_CHAR"] = new SetStrCharParser();
   }
 }
 

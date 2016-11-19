@@ -78,7 +78,7 @@ bool VarParser::HasValidStringSize(const std::string &str, size_t size) {
   return true;
 }
 
-void VarParser::SetVariable(std::vector<std::string> const &str_toks, std::string &var_name, std::string &var_type, std::string &var_data, int var_strlen) {
+void VarParser::SetVariable(std::vector<std::string> const &str_toks, std::string &var_name, std::string &var_type, std::string &var_data, int &var_strlen) {
   var_name = str_toks.at(0);
   if (!str_is_variable(var_name)) {
     std::string str_err = "invalid string name: " + var_name;

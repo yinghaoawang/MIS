@@ -8,7 +8,7 @@ class VarParser : public Parser {
     bool HasValidVarType(const std::string&, const std::string&, const std::string&);
     Token VarToTok(const std::string&, const std::string&, const std::string&, int);
     bool HasValidStringSize(const std::string&, size_t);
-    void SetVariable(const std::vector<std::string>&, std::string&, std::string&, std::string&, int);
+    void SetVariable(const std::vector<std::string>&, std::string&, std::string&, std::string&, int&);
 
   public:
     VarParser();
