@@ -7,10 +7,10 @@
 #include <map>
 #include "Variable.h"
 #include "Label.h"
-#include "Operation.h"
+#include "Operation/Operation.h"
 #include "OperationFactory.h"
 #include "ParserFactory.h"
-#include "Parser.h"
+#include "Parser/Parser.h"
 #include "Util.h"
 #include "Cache.h"
 
