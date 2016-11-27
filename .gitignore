@@ -11,3 +11,5 @@ CMakeFiles/
 *.cmake
 *.txt
 !CMakeLists.txt
+*.out
+*.err

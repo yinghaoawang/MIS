@@ -3,7 +3,8 @@ JmpgtOperation::JmpgtOperation() {}
 Operation *JmpgtOperation::Clone() {
   return  new JmpgtOperation();
 }
-void JmpgtOperation::Execute(int &prog_counter) {
+std::string JmpgtOperation::Execute(int &prog_counter) {
+  std::stringstream out;
   Label *l = params.front().GetLabel();
   Token t2 = params[1];
   Token t3 = params[2];
@@ -33,9 +34,10 @@ void JmpgtOperation::Execute(int &prog_counter) {
   else if (t2.IsReal() && t3.IsReal() && l2 > l3) do_jump = true;
 
   if (l->GetIndex() >= 0 && do_jump == true) {
-    std::cout << "jmpgt: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
+    out << "jmpgt: " << l->GetName() << ": " << prog_counter << " to " << l->GetIndex() << std::endl;
     prog_counter = l->GetIndex();
   } else {
-    std::cout << "jmpgt: not jumping" << t2.ToString() << "!>" << t3.ToString() << std::endl;
+    out << "jmpgt: not jumping" << t2.ToString() << "!>" << t3.ToString() << std::endl;
   }
+  return out.str();
 }

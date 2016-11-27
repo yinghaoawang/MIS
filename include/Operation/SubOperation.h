@@ -5,6 +5,6 @@ class SubOperation : public Operation {
   public:
     SubOperation();
     virtual Operation *Clone();
-    virtual void Execute(int &prog_counter);
+    virtual std::string Execute(int &prog_counter);
 };
 #endif

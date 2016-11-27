@@ -6,6 +6,50 @@
 #include <vector>
 #include <cstring>
 #include <sstream>
+#include <fstream>
+
+/*
+ * Function: clear_file
+ * Description: creates a new file, deletes old one if exists
+ */
+static inline void clear_file(const char *filename) {
+  std::fstream file;
+  file.open(filename, std::fstream::out);
+  file.close();
+}
+
+/*
+ * Function: print_out
+ * Description: prints output to stdout and writes to filename
+ */
+static inline void print_out(std::string msg, const char *filename) {
+  std::cout << msg;
+  std::fstream file;
+  file.open(filename, std::fstream::app);
+  if (!file.is_open()) {
+    std::cerr << "Could not open file " << filename << std::endl;
+    return;
+  }
+  file << msg;
+  file.close();
+}
+
+/*
+ * Function: print_err
+ * Description: prints output to stderr and writes to filename
+ */
+static inline void print_err(std::string msg, const char *filename) {
+  std::cerr << msg;
+  std::fstream file;
+  file.open(filename, std::fstream::app);
+  if (!file.is_open()) {
+    std::cerr << "Could not open file " << filename << std::endl;
+    return;
+  }
+  file << msg;
+  file.close();
+}
+
 
 /*
  * Function: double_equals

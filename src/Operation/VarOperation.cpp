@@ -4,4 +4,4 @@ Operation *VarOperation::Clone() {
   VarOperation *o = new VarOperation();
   return o;
 }
-void VarOperation::Execute(int &prog_counter) {}
+std::string VarOperation::Execute(int &prog_counter) { return std::string(""); }

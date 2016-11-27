@@ -6,20 +6,21 @@ Operation *AddOperation::Clone() {
   return o;
 }
 
-void AddOperation::Execute(int &prog_counter) {
-  std::cout << "add: ";
+std::string AddOperation::Execute(int &prog_counter) {
+  std::stringstream out;
+  out << "add: ";
   double dsum = 0.0;
   long lsum = 0;
   Token dest_tok = params.front();
   for (auto it = params.begin(); it != params.end(); ++it) {
     if (it == params.begin()) continue;
-    if (it != params.begin() + 1) std::cout << "+ "; // DEBUG
+    if (it != params.begin() + 1) out << "+ ";
     if (it->IsNumeric()) {
-      std::cout << it->GetAsNumeric() << " "; // DEBUG
+      out << it->GetAsNumeric() << " ";
       dsum += it->GetAsNumeric();
       lsum += it->GetAsNumeric();
     } else if (it->IsReal()) {
-      std::cout << it->GetAsReal() << " "; // DEBUG
+      out << it->GetAsReal() << " ";
       dsum += it->GetAsReal();
       lsum += it->GetAsReal();
     }
@@ -29,8 +30,9 @@ void AddOperation::Execute(int &prog_counter) {
   if (dest_tok.IsReal()) data = Data((long)lsum);
   dest_tok.SetVariableData(data);
 
-  // DEBUG
-  if (dest_tok.IsNumeric()) std::cout << "= " << dest_tok.GetAsNumeric() << std::endl;
-  if (dest_tok.IsReal()) std::cout << "= " << dest_tok.GetAsReal() << std::endl;
+  if (dest_tok.IsNumeric()) out << "= " << dest_tok.GetAsNumeric() << std::endl;
+  if (dest_tok.IsReal()) out << "= " << dest_tok.GetAsReal() << std::endl;
+
+  return out.str();
 }
 

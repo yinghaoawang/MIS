@@ -4,8 +4,9 @@ Operation *DivOperation::Clone() {
   DivOperation *o = new DivOperation();
   return o;
 }
-void DivOperation::Execute(int &prog_counter) {
-  std::cout << "div: ";
+std::string DivOperation::Execute(int &prog_counter) {
+  std::stringstream out;
+  out << "div: ";
   Token dest_tok = params.front();
 
   double ddiff = 0.0;
@@ -39,10 +40,10 @@ void DivOperation::Execute(int &prog_counter) {
     }
   }
 
-  std::cout << tok1.ToString() << " / " << tok2.ToString();
+  out << tok1.ToString() << " / " << tok2.ToString();
 
   if (div_by_zero) {
-    std::cout << std::endl;
+    out << std::endl;
     std::string str_err = "cannot divide by zero";
     throw std::runtime_error(str_err);
   }
@@ -55,5 +56,6 @@ void DivOperation::Execute(int &prog_counter) {
   }
 
   dest_tok.SetVariableData(data);
-  std::cout << " = " << dest_tok.ToString() << std::endl;
+  out << " = " << dest_tok.ToString() << std::endl;
+  return out.str();
 }

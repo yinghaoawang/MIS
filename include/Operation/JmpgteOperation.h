@@ -5,6 +5,6 @@ class JmpgteOperation : public Operation {
   public:
     JmpgteOperation();
     virtual Operation *Clone();
-    virtual void Execute(int &prog_counter);
+    virtual std::string Execute(int &prog_counter);
 };
 #endif

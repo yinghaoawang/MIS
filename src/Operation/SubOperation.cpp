@@ -5,8 +5,9 @@ Operation *SubOperation::Clone() {
   SubOperation *o = new SubOperation();
   return o;
 }
-void SubOperation::Execute(int &prog_counter) {
-  std::cout << "sub: ";
+std::string SubOperation::Execute(int &prog_counter) {
+  std::stringstream out;
+  out << "sub: ";
   Token dest_tok = params.front();
 
   double ddiff = 0.0;
@@ -31,7 +32,7 @@ void SubOperation::Execute(int &prog_counter) {
     ldiff -= tok2.GetAsReal();
   }
 
-  std::cout << tok1.ToString() << " - " << tok2.ToString();
+  out << tok1.ToString() << " - " << tok2.ToString();
 
   Data data;
   if (dest_tok.IsNumeric()) {
@@ -42,5 +43,6 @@ void SubOperation::Execute(int &prog_counter) {
   }
 
   dest_tok.SetVariableData(data);
-  std::cout << " = " << dest_tok.ToString() << std::endl;
+  out << " = " << dest_tok.ToString() << std::endl;
+  return out.str();
 }

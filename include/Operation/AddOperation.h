@@ -5,7 +5,6 @@ class AddOperation : public Operation {
   public:
     AddOperation();
     virtual Operation* Clone();
-    virtual void Execute(int&);
-
+    virtual std::string Execute(int&);
 };
 #endif

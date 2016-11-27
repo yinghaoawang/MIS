@@ -4,5 +4,5 @@ Operation *LabelOperation::Clone() {
   LabelOperation *o = new LabelOperation();
   return o;
 }
-void LabelOperation::Execute(int &prog_counter) {}
+std::string LabelOperation::Execute(int &prog_counter) { return std::string(""); }
 

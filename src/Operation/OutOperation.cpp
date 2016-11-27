@@ -3,11 +3,12 @@ OutOperation::OutOperation() {}
 Operation *OutOperation::Clone() {
   return new OutOperation();
 }
-void OutOperation::Execute(int &prog_counter) {
-  // TODO write to file
-  std::cout << "out: ";
+std::string OutOperation::Execute(int &prog_counter) {
+  std::stringstream out;
+  out << "out: ";
   for (auto it = params.begin(); it != params.end(); ++it) {
-    std::cout << it->ToString() << " ";
+    out << it->ToString() << " ";
   }
-  std::cout << std::endl;
+  out << std::endl;
+  return out.str();
 }
