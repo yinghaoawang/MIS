@@ -1,21 +1,24 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -Wfatal-errors -g
+CXXFLAGS = -std=c++14 -Wfatal-errors -g -pthread
 INC_DIR = include/
 vpath = %.o bin/
 vpath = %.cpp src/
 vpath = %.h include/
 
 SRC = $(shell find src/ -name '*.cpp')
-OBJ = $(patsubst %.cpp, %.o, $(addprefix bin/, $(patsubst src/Parser/%, %, $(wildcard src/Parser/*.cpp))))
-
 OBJ = $(addprefix bin/, $(notdir $(SRC:.cpp=.o)))
-EXE = misvm
+
+SERVER_OBJ = $(filter-out bin/client.o, $(filter-out bin/main.o, $(OBJ)))
+CLIENT_OBJ = bin/client.o bin/TCPSocket.o bin/Util.o
 
 .PHONY: all wipe clean
 
-all: $(EXE)
+all: client server
 
-$(EXE): $(OBJ)
+client: $(CLIENT_OBJ)
+	$(CXX) $(CXXFLAGS) -o $@ $^ -I$(INC_DIR)
+
+server: $(SERVER_OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $^ -I$(INC_DIR)
 
 bin/%.o: src/%.cpp
@@ -31,6 +34,11 @@ bin/%.o: src/Parser/%.cpp
 bin/%.o: src/Operation/%.cpp
 	@mkdir -p bin/
 	$(CXX) $(CXXFLAGS) -c $< -I$(INC_DIR)
+	@mv $(notdir $@) bin/
+
+bin/%.o: src/Network/%.cpp
+	@mkdir -p bin/
+	$(CXX) $(CXXFLAGS) -c $< -I$(INC_DIR)Network
 	@mv $(notdir $@) bin/
 
 clean:

@@ -17,6 +17,7 @@ std::vector<Token> AssignParser::Tokenize(Cache * const cache, const std::string
   Token tok1 = Token(v);
   Token tok2 = StrToTok(cache, str_toks.at(1));
 
+
   if (tok1.GetType() != tok2.GetType()) {
     std::string str_err = "non matching get type for assignment";
     throw std::runtime_error(str_err);

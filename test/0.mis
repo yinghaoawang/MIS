@@ -22,5 +22,4 @@ JMP LAB1
 LABEL LAB1
 JMPZ  LAB1,$myint
 JMPGTE  LAB1,$myint1,$myint2
-SLEEP 100
-SLEEP $myint
+SLEEP 5

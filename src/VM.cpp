@@ -10,37 +10,29 @@ void VM::Init() {
 }
 
 void VM::ExecuteOperations() {
-  std::cout << "Executing operations: " << std::endl;
-  std::cout << "variables: " << cache->GetVariableSize() << std::endl;
-
   for (int prog_counter = 0; prog_counter < cache->GetOperationSize(); ++prog_counter) {
     try {
       std::string output = cache->GetOperation(prog_counter)->Execute(prog_counter);
-      if (!output.empty()) print_out(output, "mis.out");
+      if (!output.empty()) {
+        outstream << output;
+      }
     } catch(std::exception &e) {
       std::string error = "runtime error: " + std::string(e.what()) + "\n";
-      print_err(error, "mis.err");
+      errstream << error;
     }
   }
 }
 
-void VM::ReadFile(char* filename) {
-  std::ifstream ifs(filename);
-  if (!ifs.is_open()) {
-    std::cerr << "Could not open file " << filename << std::endl;
-    return;
-  }
-
-  std::cout << "Reading file: " << filename << std::endl;
+void VM::ReadBuffer(std::stringstream &ss) {
   static int op_index = 0;
   std::string op_name;
   std::string line;
-  while (ifs.good()) {
-    get_opname_line(ifs, op_name, line);
+  while (ss.good()) {
+    get_opname_line(ss, op_name, line);
     if (trim(op_name).empty()) continue;
     if (!parser_factory->HasParser(op_name) || !operation_factory->HasOperation(op_name)) {
       std::string error = "compiletime error: unrecognized operation: " + op_name + "\n";
-      print_err(error, "mis.err");
+      errstream << error;
       continue;
     }
     Operation *op;
@@ -48,7 +40,7 @@ void VM::ReadFile(char* filename) {
       op = parser_factory->GetParser(op_name)->ParseOp(cache, line, op_name);
     } catch(std::exception &e) {
       std::string error = "compiletime error: " + std::string(e.what()) + "\n";
-      print_err(error, "mis.err");
+      errstream << error;
       continue;
     }
     if (op == nullptr) continue;
@@ -61,5 +53,33 @@ void VM::ReadFile(char* filename) {
   } catch(std::exception &e) {
     std::string error = "compiletime error: " + std::string(e.what()) + "\n";
   }
+}
+
+void VM::ReadBuffer(const char* buffer) {
+  std::stringstream ss;
+  ss << buffer;
+  ReadBuffer(ss);
+}
+
+void VM::ReadFile(const char* filename) {
+  std::ifstream ifs(filename);
+  if (!ifs.is_open()) {
+    std::cerr << "Could not open file " << filename << std::endl;
+    return;
+  }
+  std::cout << "Reading file: " << filename << std::endl;
+  std::stringstream ss;
+  copy(std::istreambuf_iterator<char>(ifs),
+       std::istreambuf_iterator<char>(),
+       std::ostreambuf_iterator<char>(ss));
   ifs.close();
+  ReadBuffer(ss);
+}
+
+void VM::ReadOutput(char* dest) {
+  strcpy(dest, outstream.str().c_str());
+}
+
+void VM::ReadError(char* dest) {
+  strcpy(dest, errstream.str().c_str());
 }

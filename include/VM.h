@@ -19,11 +19,17 @@ class VM {
     OperationFactory *operation_factory;
     ParserFactory *parser_factory;
     Cache *cache;
+    std::stringstream outstream;
+    std::stringstream errstream;
   public:
     VM();
     void Init();
     void ExecuteOperations();
-    void ReadFile(char* filename);
+    void ReadFile(const char* filename);
+    void ReadBuffer(const char* buffer);
+    void ReadBuffer(std::stringstream &ss);
+    void ReadOutput(char* dest);
+    void ReadError(char* dest);
 };
 
 #endif

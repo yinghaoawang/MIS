@@ -13,5 +13,4 @@ ASSIGN $movar, "idk"
 ASSIGN $mrvar, "idk"
 ASSIGN $mrvar, "idk"
 ASSIGN $mrvar, 5.0
-ASSIGN $movar, '
 ASSIGN $movar, "asd"

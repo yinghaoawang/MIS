@@ -7,6 +7,7 @@
 #include <cstring>
 #include <sstream>
 #include <fstream>
+#include <unistd.h>
 
 /*
  * Function: clear_file
@@ -23,7 +24,6 @@ static inline void clear_file(const char *filename) {
  * Description: prints output to stdout and writes to filename
  */
 static inline void print_out(std::string msg, const char *filename) {
-  std::cout << msg;
   std::fstream file;
   file.open(filename, std::fstream::app);
   if (!file.is_open()) {
@@ -39,7 +39,6 @@ static inline void print_out(std::string msg, const char *filename) {
  * Description: prints output to stderr and writes to filename
  */
 static inline void print_err(std::string msg, const char *filename) {
-  std::cerr << msg;
   std::fstream file;
   file.open(filename, std::fstream::app);
   if (!file.is_open()) {
