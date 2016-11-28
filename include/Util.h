@@ -24,8 +24,8 @@ static inline void clear_file(const char *filename) {
  * Description: prints output to stdout and writes to filename
  */
 static inline void print_out(std::string msg, const char *filename) {
-  std::fstream file;
-  file.open(filename, std::fstream::app);
+  std::ofstream file;
+  file.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
   if (!file.is_open()) {
     std::cerr << "Could not open file " << filename << std::endl;
     return;
@@ -39,14 +39,7 @@ static inline void print_out(std::string msg, const char *filename) {
  * Description: prints output to stderr and writes to filename
  */
 static inline void print_err(std::string msg, const char *filename) {
-  std::fstream file;
-  file.open(filename, std::fstream::app);
-  if (!file.is_open()) {
-    std::cerr << "Could not open file " << filename << std::endl;
-    return;
-  }
-  file << msg;
-  file.close();
+  print_out(msg, filename);
 }
 
 

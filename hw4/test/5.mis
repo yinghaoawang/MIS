@@ -1,8 +1,0 @@
-VAR $myvar, NUMERIC, 0.0001
-LABEL first
-ADD $myvar, $myvar, .003
-LABEL nothere
-JMP NoW2her
-ADD $myvar, $myvar, .005
-SLEEP 5
-JMP first

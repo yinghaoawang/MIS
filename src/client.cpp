@@ -60,6 +60,7 @@ int main(int argc, char** argv) {
     std::cerr << "Error with server\n";
     exit(1);
   }
+  std::cout << buffer << std::endl;
   print_out(buffer, "mis.out"); // Output contents to "mis.out"
 
   // Send a message to the socket that the previous write has been received
@@ -72,6 +73,7 @@ int main(int argc, char** argv) {
     std::cerr << "Error with server";
     exit(1);
   }
+  std::cout << buffer << std::endl;
   print_out(buffer, "mis.err"); // Error contents to "mis.err"
 
   cout << "Success" << endl;
