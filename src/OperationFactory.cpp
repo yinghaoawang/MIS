@@ -18,11 +18,13 @@
 #include "Operation/GetStrCharOperation.h"
 #include "Operation/SetStrCharOperation.h"
 
+/* Static variables since they will all be cloned: like a pseudo-singleton */
 std::map<std::string, Operation*> OperationFactory::operations;
 bool OperationFactory::initialized;
 
 OperationFactory::OperationFactory() { Init(); }
 
+/* Create new maps of the operations with their respective operation names as keys */
 void OperationFactory::Init() {
   if (!initialized) {
     initialized = true;
@@ -47,16 +49,17 @@ void OperationFactory::Init() {
   }
 }
 
+// Determine if an operation key exists */
 bool OperationFactory::HasOperation(const std::string &str) const {
   if (operations.find(str) == operations.end()) return false;
   return true;
 }
-
 Operation* OperationFactory::GetOperation(const std::string &str) const {
   if (HasOperation(str)) return operations[str];
   return nullptr;
 }
 
+/* Destructor */
 OperationFactory::~OperationFactory() {
   if (initialized) {
     initialized = false;

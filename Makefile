@@ -13,12 +13,12 @@ CLIENT_OBJ = bin/client.o bin/TCPSocket.o bin/Util.o
 
 .PHONY: all wipe clean
 
-all: client server
+all: client_misvm server_misvm
 
-client: $(CLIENT_OBJ)
+client_misvm: $(CLIENT_OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $^ -I$(INC_DIR)
 
-server: $(SERVER_OBJ)
+server_misvm: $(SERVER_OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $^ -I$(INC_DIR)
 
 bin/%.o: src/%.cpp
@@ -42,4 +42,4 @@ bin/%.o: src/Network/%.cpp
 	@mv $(notdir $@) bin/
 
 clean:
-	@rm -r bin $(EXE)
+	@rm -r bin client_misvm server_misvm mis.err mis.out

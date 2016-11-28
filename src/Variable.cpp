@@ -1,6 +1,14 @@
 #include "Variable.h"
 #include <iostream>
 
+/* VARIABLE
+ *
+ * A variable has a string name, and a piece of data, a vector of variables
+ * are stored in the cache. The variables are modified in the cache during
+ * parse (creation of the variables), and execution of the operations
+ * (setting and getting of the variables) */
+
+// Straightford constructors, destructors, setters, and getters
 Variable::Variable(const std::string &str_name, const Data &d) {
   name = new char[str_name.size() + 1];
   strcpy(name, str_name.c_str());

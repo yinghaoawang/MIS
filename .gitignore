@@ -3,6 +3,8 @@
 *.backup
 client
 server
+client_misvm
+server_misvm
 main
 bin/*
 m

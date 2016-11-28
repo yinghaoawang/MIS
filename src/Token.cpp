@@ -1,24 +1,30 @@
 #include "Token.h"
 #include <iostream>
 
+/* A token is used as the arguments
+ * for operations, so a token may be
+ * any data, as well as a variable or label */
+
+// Constructors
 Token::Token(double d) { v = nullptr; l = nullptr; data = new Data(d); }
 Token::Token(long lo) { v = nullptr; l = nullptr; data = new Data(lo); }
 Token::Token(char c) { v = nullptr; l = nullptr; data = new Data(c); }
 Token::Token(const char * const s, size_t size) { v = nullptr; l = nullptr; data = new Data(s, size); }
 Token::Token(const char * const s) { v = nullptr; l = nullptr; data = new Data(s, strlen(s) + 1); }
-Token::Token(Variable * const v) {
+Token::Token(Variable * const v) { // When given a variable
   l = nullptr;
-  this->v = v;
-  data = v->GetData();
+  this->v = v; // Set the variable to the variable
+  data = v->GetData(); // Set the data to the variables data (mainly to ease the checks on the types)
 }
 Token::Token(Label * const l) {
   v = nullptr;
   this->l = l;
 }
 
-Token::~Token() {
-}
+// Destructor
+Token::~Token() {}
 
+// Getters and setters
 Label *Token::GetLabel() const {
   return l;
 }

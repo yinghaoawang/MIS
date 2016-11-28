@@ -12,11 +12,13 @@
 #include "Parser/GetStrCharParser.h"
 #include "Parser/SetStrCharParser.h"
 
+/* Static variables since they will all be cloned: like a pseudo-singleton */
 std::map<std::string, Parser*> ParserFactory::parsers;
 bool ParserFactory::initialized;
 
 ParserFactory::ParserFactory() { Init(); }
 
+/* Create new maps of the operations with their respective operation names as keys */
 void ParserFactory::Init() {
   if (!initialized) {
     initialized = true;
@@ -41,11 +43,11 @@ void ParserFactory::Init() {
   }
 }
 
+// Determine if an operation key exists */
 bool ParserFactory::HasParser(const std::string &str) const {
   if (parsers.find(str) == parsers.end()) return false;
   return true;
 }
-
 Parser* ParserFactory::GetParser(const std::string &str) const {
   if (HasParser(str)) {
     return parsers[str]->Clone();
@@ -53,6 +55,7 @@ Parser* ParserFactory::GetParser(const std::string &str) const {
   return nullptr;
 }
 
+// Destructor
 ParserFactory::~ParserFactory() {
   if (initialized) {
     initialized = false;

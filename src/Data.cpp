@@ -2,6 +2,7 @@
 #include "Util.h"
 #include <cstdlib>
 
+/* Constructors, sets type to respective data type, and value to argument */
 Data::Data() {}
 Data::Data(const Data &data) {
   type = data.type;
@@ -16,7 +17,7 @@ Data::Data(const Data &data) {
 Data::Data(double d) { type = Type::Numeric; value.d = d; }
 Data::Data(long l) { type = Type::Real; value.l = l; }
 Data::Data(char c) { type = Type::Char; value.c = c; }
-Data::Data(char *src_str, size_t size) {
+Data::Data(char *src_str, size_t size) { /* The size is the max size of string, not necessarily its current length */
   type = Type::String;
   str = new char[size + 1];
   str_max_size = size;
@@ -35,6 +36,7 @@ Data::Type Data::GetType() const {
   return type;
 }
 
+/* Prints out its string formatted value depending on what type it is */
 std::string Data::ToString() const {
   std::string str;
   if (IsNumeric()) {
@@ -63,6 +65,10 @@ Data::~Data() {
   //if (type == Type::String) delete[] str;
 }
 
+/* Self explanatory:
+ * Gets value in union
+ * Returns boolean if its type is the respective type
+ */
 double Data::GetAsNumeric() const { return value.d; }
 long Data::GetAsReal() const { return value.l; }
 char Data::GetAsChar() const { return value.c; }

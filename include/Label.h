@@ -10,8 +10,6 @@ class Label {
   public:
     Label(const std::string&, int);
     ~Label();
-    void Init(int);
-
     char *GetName() const;
 
     void SetIndex(int);

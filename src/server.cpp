@@ -2,6 +2,13 @@
 #include "Network/TCPServerSocket.h"
 #include "GarbageCollector.h"
 using namespace std;
+
+/* >>>>>IMPORTANT<<<<<
+ * Running the server and interrupting it causes
+ * the server to sometimes throws "ERROR on accept: invalid argument",
+ * just keep running the server and client and it will eventually work again
+ */
+
 int main() {
   // Instantiate a new TCPSocketServer Object that listens on all insterfaces on port 9999
   TCPServerSocket * tcpServerSocket = new TCPServerSocket("0.0.0.0",9999,65536);
