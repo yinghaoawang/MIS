@@ -1,0 +1,66 @@
+problem1:
+class Classroom:
+private:
+  char* Seat : keeps track of which seats are occupied. indices refer to student by their id (macro defined max 256). stores a 1 or 0, 0 is empty, 1 is occupied
+  short occupant_count : counts the amount of occupants
+
+public:
+  Classroom() : initilizes the seats array
+  ~Classroom() : destructs the seats array
+  
+  void check_in(short) : checks student in if possible
+  void check_out(short) : checks student out if possible
+  char is_occupied(short) : checks if seat at specified location is occupied
+  short get_available_seats() : gets the amount of free seats in the class
+
+problem2:
+class Company:
+private:
+  short *product : keeps track of the stock of each product represented by the index, macro defined max 256 for each
+  short unique_stocked : counts the amount of products that have more than 0 in stock
+  
+public:
+  Company() : initilizes the product array
+  ~Company() : frees product array
+  
+  char is_product_exist(short) : check if the product exists (within 0 and max-1, 255)
+  short get_product_count(short id) : gets the stock count of the product
+  void check_in(short) : adds 1 to stock for the item if possible
+  void check_in(short, short) : adds N (second param) to stock for the item if possible
+  void check_out(short) : takes away 1 from stock for the item if possible
+  void check_out(short, short) : takes away N (second param) from stock for the item if possible
+  short get_unique_stocked() : gets the amount of products that have more than 0 in stock
+  
+problem3:
+---semantics that may need explaining---
+max heap with indices 1-N. (teacher's implementation).
+this means that index 0 is always empty
+
+>>>>>>>>><<<<<<<<<
+>>my own changes<<
+>>>>>>>>><<<<<<<<<
+
+--general changes--
+changed the header file so that it only shows the type rather than the variable name. i.e fcn(int i) to fcn(int).
+readjusted insert(int) so that it does not increment Nel (size) even if insert fails (this could lead to undefined behavior).
+readjusted insert(int) so that it checks if i <= MaxSize instead of i == MaxSize. Safer code
+
+---helper methods---
+size() returns the current size of the heap, getter for Nel. used for extraction "<<" because i didn't want to make it a friend.
+
+>>>>>>><<<<<<<
+>>assignment<<
+>>>>>>><<<<<<<
+
+---overloaded methods---
+Heap(Heap h); constructor, constructs a Heap exactly like Heap h.
+~Heap(); destructor, frees the allocated array.
+
+assignment: heap1 = heap2; reallocates heap1 so that heap1 is like a copy of heap2.
+addition:   heap1 = heap2 + heap3; addition overload, tries to insert values of heap3 of heap2. heap2 MaxSize remains the same, returns this copy of heap2.
+addition:   heap1 = heap2 + 1; addition overload, inserts 1 into heap2, and returns this copy of heap2.
+addn. asg.: heap1 += heap2; more efficient than heap1 = heap1 + heap2, but same result.
+addn. asg.: heap1 += 1; more efficient than heap1 = heap1 + 1, but same result.
+
+--kind of overloading but not really--
+cout << heap1; outputs the values of heap1 with spaces, no endline.

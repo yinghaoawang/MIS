@@ -1,0 +1,51 @@
+<<< UML DESIGN >>>
+Team partners stopped responding to me since before phase 1 deadline, so UML diagram is
+from scratch since I wrote phase 1 from scratch.
+
+<< CLIENT/SERVER MULTITHREADED MIS >>>
+Client/server multithreaded sequential MIS works fine.
+Run ./server_misvm
+Run ./client_misvm 0.0.0.0 9999 FILENAME
+Most phase 2 code from helper code and slides code (modified to fit needs, fixed a few bugs).
+
+<<< MULTITHREADING IN MIS >>>
+Did not do programmatic constructs for multi-threading.
+
+<<< BUILDING >>>
+To build, run make.
+
+<<< LONG COMPILATION? >>>
+If it is taking a while to compile, it is probably due to the fact that sleep is in the .mis file,
+as the server will sleep when parsing and executing the code.
+
+<<< HOW THE CODE WORKS >>>
+NOTE: this is all explained in the documentation (.cpp files)
+
+Phase 1:
+The sequential MIS VM takes in an input. For each line, it will determine which operation that line is,
+and fetch a parser using a parser factory to parse the line. The parser will then use an operation factory
+to fetch the respective operation.
+The operation that was returned by the parser will then be pushed to a cache (a storage class for variables,
+labels, and most importantly, operations.
+Variable creation and label creation are handled during the parsing phase, that is why each parser takes in
+a cache pointer as an argument.
+After there are no more lines left in the stream, the user will invoke VM's ExecuteOperations method. This will
+retrieve the operations in the cache, and execute them each sequentially jumping back to previous (or future) operations when
+executing jmp operations.
+The results of the output are stored in a stringstream. Same goes with the errors.
+The client retrieves the output and errors with ReadOutput and ReadError.
+The client then writes them to a file.
+
+Phase 2:
+The server creates a server socket that listens for a corresponding client. It then creates a connection
+which extends a thread class. In short, each time a client connects to the server, a connection is made.
+The connection reads from socket first getting the input file stream. The connection then creates a MIS VM,
+and handles the input with the MIS VM.
+The connection then writes the output of the MIS VM to the socket, and begins reading to wait for the client
+to receive the file.
+The client should receive the output file, where it writes to a file named mis.out. It then writes to the socket
+letting the server know that it has received the output file "mis.out".
+The server then receives it, and finishes off by writing the error file to the socket.
+The client receives it and writes the content to the error file "mis.err".
+All of this is happening in the thread, so there can be multiple clients sending files to server, and the server
+will handle them concurrently.

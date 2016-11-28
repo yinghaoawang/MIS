@@ -1,0 +1,8 @@
+    VAR     $var1,           NUMERIC, 10.312341234214
+VAR $var2, REAL, 4
+VAR $string, STRING, 2, "12"
+VAR $string2, STRING, 1, "12"
+ADD $var1, $var1, $var2
+ADD $var1, 0.0, 1.1
+SUB $var1, $var1, $var2
+SUB $var1, $var1, $var1
