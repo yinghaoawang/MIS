@@ -1,0 +1,18 @@
+JMPGT label0, 5, 4
+LABEL label0
+
+JMPGTE label1, 5, 5
+LABEL label1
+
+JMPLT label2, 4, 5
+LABEL label2
+
+JMPLTE label3, 4, 4
+LABEL label3
+
+JMPGT label9, 4, 4
+JMPGTE label9, 4, 5
+JMPLT label9, 5, 5
+JMPLTE label9, 6, 5
+
+LABEL label9

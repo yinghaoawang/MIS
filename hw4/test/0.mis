@@ -1,0 +1,25 @@
+VAR $myint, REAL, 0
+VAR $myint1, REAL, 1
+VAR $myint2, REAL, 2
+VAR $myfloat, NUMERIC, 1.0
+VAR $mystr1, STRING, 100, "0"
+VAR $mystr2, STRING, 100, "yoyo0"
+VAR $mychar1, CHAR, 'a'
+ADD $myint,100,20.7,300,$myint1
+MUL $myint,100,20.7,300,$myint1
+SUB $myint,100,$myint2
+DIV $myfloat,100,$myint2
+ASSIGN $myint,$myint1
+ASSIGN $mystr1,$mystr2
+ASSIGN $mystr1,"This  is  a test  string"
+GET_STR_CHAR  $mystr1,20,'\n'
+GET_STR_CHAR  $mystr1,2,$mychar1
+OUT $mystr1, $mychar1
+SET_STR_CHAR  $mystr1,4,'a'
+SET_STR_CHAR  $mystr1,3,$mychar1
+SET_STR_CHAR  $mystr1,5,'\n'
+JMP LAB1
+LABEL LAB1
+JMPZ  LAB1,$myint
+JMPGTE  LAB1,$myint1,$myint2
+SLEEP 5
