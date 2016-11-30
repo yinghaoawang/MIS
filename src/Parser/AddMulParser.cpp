@@ -1,4 +1,4 @@
-#include "Parser/AddMulParser.h"
+#include "AddMulParser.h"
 
 AddMulParser::AddMulParser() {}
 Parser *AddMulParser::Clone() {

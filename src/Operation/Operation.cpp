@@ -1,4 +1,4 @@
-#include "Operation/Operation.h"
+#include "Operation.h"
 
 /* Set the parameters of the operation */
 void Operation::SetParams(std::vector<Token> &param_tok) {

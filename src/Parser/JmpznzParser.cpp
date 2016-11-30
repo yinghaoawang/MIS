@@ -1,4 +1,4 @@
-#include "Parser/JmpznzParser.h"
+#include "JmpznzParser.h"
 
 JmpznzParser::JmpznzParser() {}
 Parser *JmpznzParser::Clone() { return new JmpznzParser(); }

@@ -1,4 +1,4 @@
-#include "Operation/GetStrCharOperation.h"
+#include "GetStrCharOperation.h"
 GetStrCharOperation::GetStrCharOperation() {}
 Operation *GetStrCharOperation::Clone() {
   GetStrCharOperation *o = new GetStrCharOperation;

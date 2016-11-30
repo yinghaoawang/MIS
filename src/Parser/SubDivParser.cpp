@@ -1,4 +1,4 @@
-#include "Parser/SubDivParser.h"
+#include "SubDivParser.h"
 SubDivParser::SubDivParser() {}
 Parser *SubDivParser::Clone() {
   Parser *p = new SubDivParser();

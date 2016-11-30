@@ -1,4 +1,4 @@
-#include "Parser/Parser.h"
+#include "Parser.h"
 
 /* PARSER
  * An abstract class where given a line of mis code (such as ADD $var 1,2), it will parse the line

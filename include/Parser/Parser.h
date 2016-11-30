@@ -4,12 +4,12 @@
 #include <iostream>
 #include <map>
 #include <exception>
-#include "OperationFactory.h"
-#include "Operation/Operation.h"
-#include "Token.h"
-#include "Variable.h"
-#include "Util.h"
-#include "Cache.h"
+#include "../OperationFactory.h"
+#include "../Operation/Operation.h"
+#include "../Token.h"
+#include "../Variable.h"
+#include "../Util.h"
+#include "../Cache.h"
 
 class Parser {
   protected:

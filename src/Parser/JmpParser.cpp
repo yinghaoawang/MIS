@@ -1,4 +1,4 @@
-#include "Parser/JmpParser.h"
+#include "JmpParser.h"
 JmpParser::JmpParser() {}
 Parser *JmpParser::Clone() { return new JmpParser(); }
 std::vector<Token> JmpParser::Tokenize(Cache * const cache, const std::string &str) {

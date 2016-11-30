@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++14 -Wfatal-errors -g -pthread
 INC_DIR = include/
 vpath = %.o bin/
 vpath = %.cpp src/
-vpath = %.h include/
+vpath = %.h $(INC_DIR)
 
 SRC = $(shell find src/ -name '*.cpp')
 OBJ = $(addprefix bin/, $(notdir $(SRC:.cpp=.o)))
@@ -28,12 +28,12 @@ bin/%.o: src/%.cpp
 
 bin/%.o: src/Parser/%.cpp
 	@mkdir -p bin/
-	$(CXX) $(CXXFLAGS) -c $< -I$(INC_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -I$(INC_DIR)Parser
 	@mv $(notdir $@) bin/
 
 bin/%.o: src/Operation/%.cpp
 	@mkdir -p bin/
-	$(CXX) $(CXXFLAGS) -c $< -I$(INC_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -I$(INC_DIR)Operation
 	@mv $(notdir $@) bin/
 
 bin/%.o: src/Network/%.cpp
@@ -42,4 +42,4 @@ bin/%.o: src/Network/%.cpp
 	@mv $(notdir $@) bin/
 
 clean:
-	@rm -r bin client_misvm server_misvm mis.err mis.out
+	@rm -rf bin client_misvm server_misvm mis.err mis.out

@@ -1,4 +1,4 @@
-#include "Parser/JmpglteParser.h"
+#include "JmpglteParser.h"
 
 JmpglteParser::JmpglteParser() {}
 Parser *JmpglteParser::Clone() { return new JmpglteParser(); }

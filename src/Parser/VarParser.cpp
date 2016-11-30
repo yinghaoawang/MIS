@@ -1,4 +1,4 @@
-#include "Parser/VarParser.h"
+#include "VarParser.h"
 
 // Public
 VarParser::VarParser() {}

@@ -1,4 +1,4 @@
-#include "Operation/SetStrCharOperation.h"
+#include "SetStrCharOperation.h"
 SetStrCharOperation::SetStrCharOperation() {}
 Operation *SetStrCharOperation::Clone() {
   SetStrCharOperation *o = new SetStrCharOperation;

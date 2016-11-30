@@ -1,4 +1,4 @@
-#include "Operation/JmpzOperation.h"
+#include "JmpzOperation.h"
 JmpzOperation::JmpzOperation() {}
 Operation *JmpzOperation::Clone() {
   JmpzOperation *o = new JmpzOperation();

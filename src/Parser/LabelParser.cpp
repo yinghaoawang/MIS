@@ -1,4 +1,4 @@
-#include "Parser/LabelParser.h"
+#include "LabelParser.h"
 LabelParser::LabelParser() {}
 Parser *LabelParser::Clone() {
   Parser *p = new LabelParser();

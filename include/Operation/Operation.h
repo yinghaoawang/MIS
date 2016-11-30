@@ -5,8 +5,8 @@
 #include <chrono>
 #include <thread>
 #include <exception>
-#include "Token.h"
-#include "Util.h"
+#include "../Token.h"
+#include "../Util.h"
 
 class Operation {
   protected:

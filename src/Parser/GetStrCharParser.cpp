@@ -1,4 +1,4 @@
-#include "Parser/GetStrCharParser.h"
+#include "GetStrCharParser.h"
 #include <cstring>
 GetStrCharParser::GetStrCharParser() {}
 Parser *GetStrCharParser::Clone() {

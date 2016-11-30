@@ -1,4 +1,4 @@
-#include "Operation/DivOperation.h"
+#include "DivOperation.h"
 DivOperation::DivOperation() {}
 Operation *DivOperation::Clone() {
   DivOperation *o = new DivOperation();
