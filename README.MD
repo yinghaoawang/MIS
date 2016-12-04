@@ -1,3 +1,5 @@
+#The Machine Instructions Simulator (MIS)
+
 MIS is a virtual machine that is designed to execute a set of instructions. An MIS
 program is represented by a set of variable declarations and a set of instructions
 that operates on the set of defined variables. A program is introduced to the MIS
