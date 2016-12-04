@@ -80,3 +80,9 @@ SLEEP 100
 SLEEP $myint
 ~~~~
 
+#Client and Server Model
+MIS handles simultaneous requests to the server which runs the MIS. Start the server, and connect to the MIS on ip "0.0.0.0" and port 9999. 
+~~~~
+./server_misvm
+./client_misvm "0.0.0.0" 9999 test/0.mis
+~~~~
