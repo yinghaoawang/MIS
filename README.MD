@@ -1,4 +1,4 @@
-#The Machine Instructions Simulator (MIS)
+# The Machine Instructions Simulator (MIS)
 
 MIS is a virtual machine that is designed to execute a set of instructions. An MIS
 program is represented by a set of variable declarations and a set of instructions
@@ -28,7 +28,7 @@ The following template is used to define variables in an MIS program, and
 variable names should start with $:
 VAR <name>,<type>,<optional: size in case of string only>, <default value>
 
-Examples: 
+### Examples: 
 
 ~~~~
 VAR $myint,NUMERIC,100
@@ -80,7 +80,7 @@ SLEEP 100
 SLEEP $myint
 ~~~~
 
-#Client and Server Model
+# Client and Server Model
 MIS handles simultaneous requests to the server which runs the MIS. Start the server, and connect to the MIS on ip "0.0.0.0" and port 9999. 
 ~~~~
 ./server_misvm
